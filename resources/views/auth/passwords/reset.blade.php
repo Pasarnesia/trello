@@ -1,10 +1,22 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="panel panel-default panel-login">
                 <div class="panel-heading">Reset Password</div>
 
                 <div class="panel-body">
@@ -59,12 +71,16 @@
                                 <button type="submit" class="btn btn-primary">
                                     Reset Password
                                 </button>
+                                <a href="{{ route('login') }}" class="btn btn-default">
+                                    Login
+                                </a>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
+
+    </body>
+</html>
+    

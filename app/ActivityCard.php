@@ -24,5 +24,15 @@ class ActivityCard extends Model
     {
         return $this->hasMany('App\Checklist');
     }
+
+    public function transaction()
+    {
+        return $this->belongsTo('App\Transaction');
+    }
+
+    public function media()
+    {
+        return $this->belongsTo('App\Media');
+    }
     
 }

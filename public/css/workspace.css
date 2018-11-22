@@ -1,0 +1,189 @@
+body{
+    overflow: hidden;
+}
+.container-full{
+    min-width: 100%;
+    position: absolute;
+    background-color: #dadade;
+    /* background-color: #6f74dd; */
+    padding-left: 310px;
+    padding-top: 40px;
+    position: fixed;
+    height: 100%;
+    z-index: 0;
+    color: #000;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    top: 20;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+}
+.container-project{
+    width: 300px;
+    background-color: #000066;
+    padding-left: 65px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    border-right: 2px solid #fff;
+    padding-top: 65px;
+    z-index: 1;
+}
+.container-icon{
+    width: 60px;
+    height: 100%;
+    background-color: #00003b;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    text-align: center;
+    border-right: 2px solid #000;
+    padding-top: 65px;
+    font-size: 28px;
+    color: #fff;
+    z-index: 2;
+}
+.project-name{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 300px;
+    background-color: #00003b;
+    /* background-color: #442995; */
+    /* height: 70px; */
+    color: #fff;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #000;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 5px;
+    height: 60px;
+    z-index: 3;
+}
+.icon-items:hover{
+    cursor: pointer;
+    background-color: #000066;
+}
+.icon-items{
+    padding: 5px 0px;
+}
+.icon-active{
+    background-color: #000066;
+}
+.project-items{
+    width: 102%;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    left: -5px;
+    text-decoration: unset;
+}
+.project-items:hover{
+    background-color: #00003b;
+    text-decoration: unset;
+}
+.project-details{
+    width: 100%;
+    z-index: 5;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    padding-left: 315px;
+    color: #000;
+}
+.card-list{
+    /* min-height: 200px; */
+    width: 300px;
+    background-color: #000066;
+    color: #fff;
+    border-radius: 5px;
+    padding-top:45px;
+    /* padding: 53px 5px 5px 5px; */
+    position: relative;
+    margin: 5px;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+}
+.add-new-list{
+    width: 300px;
+    background-color: #000066;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    margin: 5px;
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: top;
+    cursor: pointer;
+}
+.add-new-list:hover{
+    background: #00003b;
+}
+.card-title{
+    height: 45px;
+    width: 100%;
+    background-color:#442995;
+    border-bottom: #00003b 3px solid;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 0px;
+    font-weight: bold;
+}
+.card-setting-button{
+    font-size: 6px;
+    position: relative;
+    float: right;
+    right: 2px;
+    padding: 10px 0px;
+    cursor: pointer;
+}
+.card-setting-button:hover{
+    color: #dadade;
+}
+.activity-card-list{
+    width: 280px;
+    border: #00003b 1px solid;
+    margin: 10px;
+    position: relative;
+    border-radius: 4px;
+    background: #fff;
+    color: #000;
+    padding: 5px;
+    cursor: pointer;
+}
+.activity-card-list:hover{
+    background:#dadade;
+}
+.activity-card-list:active{
+    cursor: move;
+}
+.activity-card-title{
+    width: 230px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+.activity-card-edit{
+    margin: 5px;
+    float: right;
+    background: none;
+    border: none;
+}
+.new-card{
+    margin: 10px;
+    cursor: pointer;
+}
+.new-card:hover{
+    color: #dadade;
+}
