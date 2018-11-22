@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Http\Libraries;
-
-use App\User;
 use App\Project;
 
 class ProjectLibrary
@@ -12,6 +9,8 @@ class ProjectLibrary
         $projectList = Project::whereHas('userProject', function($q) use($userId){
             $q->where('user_id', $userId);
         })->get();
+
+        // Filter project yang dimiliki user, berdasarkan tabel user_projects
         
         return $projectList;
     }

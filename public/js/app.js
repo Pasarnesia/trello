@@ -964,7 +964,7 @@ module.exports = Cancel;
 
 __webpack_require__(10);
 __webpack_require__(42);
-module.exports = __webpack_require__(43);
+(function webpackMissingModule() { throw new Error("Cannot find module \"/home/nusantara/Projects/laravel/trello/resources/assets/sass/test.scss\""); }());
 
 
 /***/ }),
@@ -43303,12 +43303,6 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: write EPIPE\n    at WriteWrap.afterWrite [as oncomplete] (net.js:836:14)\n    at runLoaders (/home/nusantara/Projects/laravel/trello/node_modules/webpack/lib/NormalModule.js:195:19)\n    at /home/nusantara/Projects/laravel/trello/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /home/nusantara/Projects/laravel/trello/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/home/nusantara/Projects/laravel/trello/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at /home/nusantara/Projects/laravel/trello/node_modules/img-loader/index.js:45:31\n    at process._tickCallback (internal/process/next_tick.js:68:7)");
 
 /***/ })
 /******/ ]);

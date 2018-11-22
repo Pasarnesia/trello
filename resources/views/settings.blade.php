@@ -23,4 +23,9 @@
             <span class="fa fa-circle"></span>&nbsp;&nbsp; Helps
         </div>
     </a>
+    <a href="/settings/" style="text-decoration: none">
+        <div class="project-items">
+            <span class="fa fa-circle"></span>&nbsp;&nbsp; Feedbacks
+        </div>
+    </a>
 @endsection

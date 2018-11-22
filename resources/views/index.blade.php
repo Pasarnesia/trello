@@ -21,7 +21,6 @@
             <div class="project-name">
                     Work Plan App
                 </div>
-                @yield('container-project')
                 <div class="container-project">
                     @yield('container-project')
                 </div>
@@ -47,9 +46,18 @@
                             <span class="fa fa-cog"></span>
                         </div>
                     </a>
-                    <div class="icon-items" title="Logout" id="logoutIconId">
-                        <span class="fa fa-power-off"></span>
-                    </div>
+                    <a href="#" style="text-decoration: none; color:unset;"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();"
+                    >
+                        <div class="icon-items" title="Logout" id="logoutIconId">
+                            <span class="fa fa-power-off"></span>
+                        </div>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+
                 </div>
                 @yield('project-details')
                 <div class="container-full">
