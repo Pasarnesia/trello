@@ -18,7 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
 Route::get('/projects/{project_id}', 'HomeController@projectView')->name('projectView');
 Route::get('/projects', 'HomeController@projectMenu')->name('projectMenu');
+Route::post('/projects', 'HomeController@createProject')->name('createProject');
+
 Route::get('/chats', 'HomeController@chatMenu')->name('chatMenu');
+Route::get('/chats/{project_id}', 'HomeController@chatProject')->name('chatProject');
+
 Route::get('/settings', 'HomeController@settingMenu')->name('settingMenu');

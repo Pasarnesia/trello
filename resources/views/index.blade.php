@@ -63,5 +63,7 @@
                 <div class="container-full">
                     @yield('container-full')
                 </div>
+                @yield('chat')
+                @yield('popup')
     </body>
 </html>

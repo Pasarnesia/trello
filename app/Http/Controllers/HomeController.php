@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Project;
+use App\UserProject;
 use App\Http\Libraries\ProjectLibrary;
 
 class HomeController extends Controller
@@ -51,6 +52,7 @@ class HomeController extends Controller
         $data = [
             'projectList' => $projectList,
             'currentProject' => $projectItem,
+            'user' => $current_user,
         ];
         return view('project', $data);
     }
@@ -60,6 +62,30 @@ class HomeController extends Controller
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
             'projectList' => $projectList,
+            'user' => $current_user,
+        ];
+        return view('project', $data);
+    }
+
+    public function createProject(Request $request)
+    {
+        $current_user = Auth::user();
+        $savedProjects = Project::create([
+            'name' => @$request->name,
+            'cost' => @$request->cost,
+            'address' => @$request->address,
+            'created_by' => @$current_user->id,
+            'cost_status' => 1,
+        ]);
+        $userProject = UserProject::create([
+            'project_id' => @$savedProjects->id,
+            'user_id' => @$current_user->id,
+            'user_level_id' => 1,
+        ]);
+        $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $data = [
+            'projectList' => $projectList,
+            'user' => $current_user,
         ];
         return view('project', $data);
     }
@@ -71,6 +97,16 @@ class HomeController extends Controller
             'projectList' => $projectList,
         ];
         return view('chat', $data);
+    }
+
+    public function chatProject($projectId){
+        $current_user = Auth::user();
+        $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $data = [
+            'projectList' => $projectList,
+            'projects' => Project::where('id', $projectId)->first(),
+        ];
+        return view('chatproject', $data);
     }
 
     public function settingMenu(){
