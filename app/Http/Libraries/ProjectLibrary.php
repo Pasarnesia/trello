@@ -8,7 +8,9 @@ class ProjectLibrary
     {
         $projectList = Project::whereHas('userProject', function($q) use($userId){
             $q->where('user_id', $userId);
-        })->get();
+        })
+        ->with('createdBy')
+        ->get();
 
         // Filter project yang dimiliki user, berdasarkan tabel user_projects
         

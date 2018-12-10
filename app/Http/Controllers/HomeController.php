@@ -47,6 +47,7 @@ class HomeController extends Controller
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $projectItem = Project::where('id', $projectId)
             ->with('userProject.user')
+            ->with('createdBy')
             ->with(['listCard.activityCard' => function($q){
                 $q->with('transaction.transactionList')->with('priority.color')->with('media')->with('checklist.media');
             }])
@@ -55,6 +56,7 @@ class HomeController extends Controller
         $data = [
             'projectList' => $projectList,
             'currentProject' => $projectItem,
+            'projectArray' => json_encode($projectItem->toArray()),
             'user' => $current_user,
         ];
         return view('project', $data);

@@ -1,6 +1,7 @@
 $(document).ready(function(){
-    $('#projectIconId').attr('class', 'icon-items icon-active');
 
+    $('#projectIconId').attr('class', 'icon-items icon-active');
+// content descriptions
     $('#contentDescriptionId').click(function(){
         $('#addActivityDescription').attr('disabled', false);
         $('#addActivityDescription').focus();
@@ -16,6 +17,7 @@ $(document).ready(function(){
         updateDescriptions($('#activityCardDataId').val(), $('#addActivityDescription').val(), 'description');
     });
 
+// content due date
     $('#contentDueDateId').click(function(){
         $('#addActivityDueDate').attr('disabled', false);
         $('#addActivityDueDate').focus();
@@ -31,12 +33,44 @@ $(document).ready(function(){
         updateDescriptions($('#activityCardDataId').val(), $('#addActivityDueDate').val(), 'due_date');
     });
 
+// list title update
+    $('#contentTitleUpdateId').click(function(){
+        $('#listTitleUpdateId').attr('disabled', false);
+        $('#listTitleUpdateId').focus();
+    })
+    $('#listTitleUpdateId').keypress(function(e) {
+        if(e.which == 13) {
+            $('#listTitleUpdateId').attr('disabled', true);
+            updateTitle($('#activityCardDataId').val(), $('#listTitleUpdateId').val(), 'due_date');
+        }
+    });
+    $('#listTitleUpdateId').blur(function() {
+        $('#listTitleUpdateId').attr('disabled', true);
+        updateTitle($('#listUpdateId').val(), $('#listTitleUpdateId').val(), 'due_date');
+    });
+
+// delete list
+    $('#deleteListModal').click(function(){
+        deleteList($('#listUpdateId').val());
+    })
+
+// delete activity
+    $('#deleteActivityCardId').click(function(){
+        deleteActivity($('#activityCardDataId').val());
+    })
 })
 
 function projectAddShow(val)
 {
     (val == 0)?$('#addProject').hide():$('#addProject').show();
 }
+
+function detailListModal(val, data)
+{
+    (val == 0)?$('#listDetailModalId').hide():$('#listDetailModalId').show();
+    getList(data, 'detailListModal');
+}
+
 
 function listAddShow(val)
 {
@@ -49,13 +83,49 @@ function cardAddShow(val, listId)
     $('#listCardId').val(listId);
 }
 
-function checklistViewShow(val, id_, title, description, duedate)
+function checklistViewShow(val, data)
 {
     (val == 0)?$('#checklistView').hide():$('#checklistView').show();
-    $('#activityCardId').text(title);
-    $('#addActivityDescription').val(description);
-    $('#addActivityDueDate').val(duedate);
-    $('#activityCardDataId').val(id_);
+    getActivity(data, 'checklistViewShow');
+}
+
+function getList(listId, type){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+        data: {
+        _token: csrf_token,
+        listId : listId,
+        },
+        type: 'POST',
+        url: '/api/project/list/',
+        success: function(response) {
+            if(type == 'detailListModal'){
+                $('#listTitleUpdateId').val(response.name);
+                $('#listUpdateId').val(response.id);
+                
+            }
+        },
+    });
+}
+
+function getActivity(activityId, type){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+        data: {
+        _token: csrf_token,
+        activityId : activityId,
+        },
+        type: 'POST',
+        url: '/api/project/activity/',
+        success: function(response) {
+            if(type == 'checklistViewShow'){
+                $('#activityCardId').text(response.name);
+                $('#addActivityDescription').val(response.description);
+                $('#addActivityDueDate').val(response.due_date);
+                $('#activityCardDataId').val(response.id);
+            }
+        },
+    });
 }
 
 function viewTransaction(val)
@@ -69,7 +139,6 @@ function viewTransaction(val)
         $('#checklistContentId').show()
     }
 }
-
 
 function updateDescriptions(activityId, value, type){
     csrf_token = $("input[name='_token']").val();
@@ -87,3 +156,60 @@ function updateDescriptions(activityId, value, type){
       },
     });
   }
+
+  function updateTitle(listId, value){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token,
+        name : value,
+      },
+      type: 'PUT',
+      url: '/api/project/list/'+listId+'/update/',
+      success: function(response) {
+          window.location.reload();
+      },
+    });
+  }
+
+  function deleteList(listId){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token,
+      },
+      type: 'DELETE',
+      url: '/api/project/list/'+listId+'/delete/',
+      success: function(response) {
+          window.location.reload();
+      },
+    });
+  }
+
+  function deleteActivity(activityId){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token,
+      },
+      type: 'DELETE',
+      url: '/api/project/activity/'+activityId+'/delete/',
+      success: function(response) {
+          window.location.reload();
+      },
+    });
+  }
+
+
+function listItems(list){
+    htmlData = '';
+    list.forEach(function(data){
+        htmlData = htmlData + '<div class="card-list"><div onclick="detailListModal(1, '+data.id+')" class="card-title" style="cursor:pointer;">'+data.name+'<div class="card-setting-button" title="List Setting"><div style="cursor:pointer;"><span class="fa fa-circle"></span><span class="fa fa-circle"></span><span class="fa fa-circle"></span></div></div></div>';
+        data.activity_card.forEach(function(activity){
+             htmlData = htmlData + "<div class='activity-card-list' onclick='checklistViewShow(1, "+activity.id+")'><div class='activity-card-title' title='Activity Card List'>"+activity.name+"</div><div class='activity-card-edit'><span class='fa fa-pencil' style='float: right'></span></div></div>";
+        })
+
+        htmlData = htmlData + '<div class="new-card" onclick="cardAddShow(1, '+data.id+')"><span class="fa fa-plus"></span>&nbsp;Add New Card</div></div>';
+    });
+    $('#cardListId').html(htmlData+'<div class="add-new-list" onclick="listAddShow(1)">&nbsp;<span class="fa fa-plus"></span>&nbsp;Add a new list</div>');
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Project;
 use App\Http\Controllers\Controller;
 use App\Project;
 use App\ActivityCard;
+use App\ListCard;
 
 use Illuminate\Http\Request;
 use Validator;
@@ -39,6 +40,7 @@ class ProjectController extends Controller
             return response()->json(['message' => $validator->messages()], 400);
         }
     }
+
     public function updateDescription(Request $request)
     {
         $activityId = $request->activityId;
@@ -61,5 +63,42 @@ class ProjectController extends Controller
                 'message' => 'Not Found',
             ]);
         }
+    }
+
+    public function getActivityCard(Request $request){
+        $activity = ActivityCard::where('id', $request->activityId);
+        return @$activity->first();
+    }
+
+    public function getListCard(Request $request){
+        $listCard = ListCard::where('id', $request->listId);
+        return @$listCard->first();
+    }
+
+    public function updateLIstCard($id, Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->messages()], 400);
+        }
+        $listCard = ListCard::where('id', $id)->first();
+        @$listCard->update([
+            'name' => $request->name,
+        ]);
+        $listCard->save();
+        return response()->json([
+            'status' => 'success',
+        ]);
+    }
+
+    public function deleteListCard($id){
+        $listCard = ListCard::where('id', $id)->first();
+        $listCard->delete();
+    }
+
+    public function deleteActivityCard($id){
+        $activity = ActivityCard::where('id', $id)->first();
+        $activity->delete();
     }
 }

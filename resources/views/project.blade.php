@@ -2,15 +2,36 @@
 
 @section('extrajs')
     <script type="text/javascript" src="{{ asset('js/page/projects.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            getProjectData();
+        });
+        function getProjectData(){
+            window.store = JSON.parse(@json(@$projectArray));
+            $('#currentProjectTitle').text(window.store.name);
+            $('#currentProjectCreator').text(window.store.created_by.name);
+            $('#currentProjectCity').text(window.store.address);
+            var User = "";
+            i = 0;
+            window.store.user_project.forEach(function(element) {
+                User = (i==0)?element.user.name:User + ", " + element.user.name;
+                i++;
+            });
+            $('#currentProjectUser').text(User);
+            listItems(window.store.list_card);
+        }
+    </script>
+
 @endsection
 
 @section('project-details')
     <div class="project-details">
         @if(!empty(@$currentProject->listCard))
-            <b> {{ @$currentProject->name }} </b> 
-            | {{ @$currentProject->createdBy->name }} 
-            |
-            | {{ @$currentProject->address }} <br/>
+            <b><span id="currentProjectTitle"></span></b> 
+            | <span id="currentProjectCreator"></span>
+            | <span id="currentProjectUser"></span>
+            | <span id="currentProjectCity"></span>
+            <br/>
         @else
             <b>Projects</b>
         @endif
@@ -18,39 +39,7 @@
 @endsection
 
 @section('container-full')
-    @if(!empty(@$currentProject->listCard))
-        @foreach (@$currentProject->listCard as $listItems)
-        <div class="card-list">
-            <div class="card-title">
-                {{ $listItems->name }}
-                <div class="card-setting-button" title="List Setting">
-                    <span class="fa fa-circle"></span>
-                    <span class="fa fa-circle"></span>
-                    <span class="fa fa-circle"></span>
-                </div>
-            </div>
-            @foreach (@$listItems->activityCard as $activityCardList)
-                <div class="activity-card-list" onclick="checklistViewShow(1, '{{ @$activityCardList->id }}', '{{ @$activityCardList->name }}', '{{ @$activityCardList->description }}', '{{ @$activityCardList->due_date }}')">
-                    <div class="activity-card-title" title="Activity Card List">
-                        {{ $activityCardList->name }}
-                    </div>
-                    <div class="activity-card-edit">
-                        <span class="fa fa-pencil" style="float: right"></span>
-                    </div>
-                </div>
-            @endforeach
-            <div class="new-card" onclick="cardAddShow(1, '{{ $listItems->id }}')">
-                <span class="fa fa-plus"></span>
-                Add New Card
-            </div>
-        </div>
-        @endforeach
-    @endif
-    <div class="add-new-list" onclick="listAddShow(1)">
-        &nbsp;
-        <span class="fa fa-plus"></span>
-        &nbsp;
-        Add a new list
+    <div id="cardListId">
     </div>
 @endsection
 
@@ -210,6 +199,9 @@
                         </button>
                     </div>
                 </div>
+                <button class="btn btn-danger" id="deleteActivityCardId">
+                    <span class="fa fa-trash"></span> Delete
+                </button>
             </div>
         </div>
 
@@ -223,6 +215,31 @@
                 adadasdasdasd
             </div>
         </div>
+    </div>
 
+    <div class="popup-modal" id="listDetailModalId">
+        <div class="popup-content" >
+            <div class="close-button" onclick="detailListModal(0)">
+                <span class="fa fa-close"></span>
+            </div>
+            <h4>List Details</h4>
+            <hr style="border: 2px solid #000066;">
+            <label>List Name</label>
+            <div id="contentTitleUpdateId">
+                <input type="hidden" id="listUpdateId"/>
+                <input type="text" id="listTitleUpdateId" class="form-control" disabled style="cursor:text;"/>
+            </div>
+            <br>
+            <div class="popup-footer">
+                <div class="btn btn-danger" id="deleteListModal">
+                    <span class="fa fa-trash"></span>
+                    &nbsp; Delete
+                </div>
+                <div class="btn btn-default" onclick="detailListModal(0)">
+                    <span class="fa fa-close"></span>
+                    &nbsp; Cancel
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
