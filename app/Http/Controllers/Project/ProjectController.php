@@ -51,7 +51,6 @@ class ProjectController extends Controller
             $activityItem->update([
                 $type => $value,
             ]);
-            // dd($activityItem);
             $activityItem->save();
             return response()->json([
                 'status' => 'success',

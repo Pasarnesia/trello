@@ -6,6 +6,7 @@
         $(document).ready(function(){
             getProjectData();
         });
+        
         function getProjectData(){
             window.store = JSON.parse(@json(@$projectArray));
             $('#currentProjectTitle').text(window.store.name);
@@ -27,7 +28,11 @@
 @section('project-details')
     <div class="project-details">
         @if(!empty(@$currentProject->listCard))
-            <b><span id="currentProjectTitle"></span></b> 
+            <b>
+                <span id="currentProjectTitle"></span>
+                &nbsp;
+                <span class="fa fa-pencil"></span>
+            </b> 
             | <span id="currentProjectCreator"></span>
             | <span id="currentProjectUser"></span>
             | <span id="currentProjectCity"></span>
@@ -165,6 +170,13 @@
             <hr style="border: 2px solid #000066;">
             <div class="popup-form">
                 <input type="hidden" id="activityCardDataId">
+                <div class="popup-panel-title">
+                    <span class="fa fa-info"></span>
+                    <label>Title</label><br/>
+                    <div class="popup-panel-content" id="contentTitleId">
+                        <input class="form-control form-update" disabled id="addActivityTitle"/>
+                    </div>
+                </div>
                 <div class="popup-panel-title">
                     <span class="fa fa-bars"></span>
                     <label>Description</label><br/>

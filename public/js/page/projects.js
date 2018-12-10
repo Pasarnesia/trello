@@ -1,6 +1,23 @@
 $(document).ready(function(){
 
     $('#projectIconId').attr('class', 'icon-items icon-active');
+
+// content title
+    $('#contentTitleId').click(function(){
+        $('#addActivityTitle').attr('disabled', false);
+        $('#addActivityTitle').focus();
+    })
+    $('#addActivityTitle').keypress(function(e) {
+        if(e.which == 13) {
+            $('#addActivityTitle').attr('disabled', true);
+            updateDescriptions($('#activityCardDataId').val(), $('#addActivityTitle').val(), 'name');
+        }
+    });
+    $('#addActivityTitle').blur(function() {
+        $('#addActivityTitle').attr('disabled', true);
+        updateDescriptions($('#activityCardDataId').val(), $('#addActivityTitle').val(), 'name');
+    });
+
 // content descriptions
     $('#contentDescriptionId').click(function(){
         $('#addActivityDescription').attr('disabled', false);
@@ -67,7 +84,7 @@ function projectAddShow(val)
 
 function detailListModal(val, data)
 {
-    (val == 0)?$('#listDetailModalId').hide():$('#listDetailModalId').show();
+    (val == 0) ? $('#listDetailModalId').hide() : $('#listDetailModalId').show();
     getList(data, 'detailListModal');
 }
 
@@ -93,8 +110,8 @@ function getList(listId, type){
     csrf_token = $("input[name='_token']").val();
     return $.ajax({
         data: {
-        _token: csrf_token,
-        listId : listId,
+            _token: csrf_token,
+            listId : listId,
         },
         type: 'POST',
         url: '/api/project/list/',
@@ -102,7 +119,6 @@ function getList(listId, type){
             if(type == 'detailListModal'){
                 $('#listTitleUpdateId').val(response.name);
                 $('#listUpdateId').val(response.id);
-                
             }
         },
     });
@@ -120,6 +136,7 @@ function getActivity(activityId, type){
         success: function(response) {
             if(type == 'checklistViewShow'){
                 $('#activityCardId').text(response.name);
+                $('#addActivityTitle').val(response.name);
                 $('#addActivityDescription').val(response.description);
                 $('#addActivityDueDate').val(response.due_date);
                 $('#activityCardDataId').val(response.id);
@@ -211,5 +228,6 @@ function listItems(list){
 
         htmlData = htmlData + '<div class="new-card" onclick="cardAddShow(1, '+data.id+')"><span class="fa fa-plus"></span>&nbsp;Add New Card</div></div>';
     });
+
     $('#cardListId').html(htmlData+'<div class="add-new-list" onclick="listAddShow(1)">&nbsp;<span class="fa fa-plus"></span>&nbsp;Add a new list</div>');
 }

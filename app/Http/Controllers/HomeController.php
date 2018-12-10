@@ -45,6 +45,7 @@ class HomeController extends Controller
     public function projectView($projectId){
         $current_user = Auth::user();
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        
         $projectItem = Project::where('id', $projectId)
             ->with('userProject.user')
             ->with('createdBy')
@@ -136,11 +137,6 @@ class HomeController extends Controller
             return redirect('projects');
         }
     }
-
-    // public function checklistView()
-    // {
-
-    // }
 
     public function chatMenu(){
         $current_user = Auth::user();

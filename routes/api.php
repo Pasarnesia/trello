@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',], function(){
     Route::get('/', ['as'=> 'root', 'uses'=> 'ProjectController@index']);
     Route::post('create', ['as'=> 'create', 'uses'=> 'ProjectController@create']);
+    
     Route::group(['prefix'=> 'list', 'as'=> 'list.',], function(){
         Route::post('/', ['as'=> 'root', 'uses'=> 'ProjectController@getListCard']);
         Route::group(['prefix'=> '{list_id}'], function(){
