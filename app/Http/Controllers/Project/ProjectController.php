@@ -1,7 +1,10 @@
 <?php
 namespace App\Http\Controllers\Project;
+
 use App\Http\Controllers\Controller;
 use App\Project;
+use App\ActivityCard;
+
 use Illuminate\Http\Request;
 use Validator;
 use Auth;
@@ -31,14 +34,32 @@ class ProjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            // 'cost' => 'required',
-            // 'cost_status' => 'required',
-            // 'address' => 'required',
-            // 'created_by' => 'required',
         ]);
         if($validator->fails()){
             return response()->json(['message' => $validator->messages()], 400);
         }
-        dd($this);
+    }
+    public function updateDescription(Request $request)
+    {
+        $activityId = $request->activityId;
+        $value = $request->value;
+        $type = $request->type;
+        $activityItem = ActivityCard::where('id', $activityId)->first();
+        if(!empty($activityItem)){
+            $activityItem->update([
+                $type => $value,
+            ]);
+            // dd($activityItem);
+            $activityItem->save();
+            return response()->json([
+                'status' => 'success',
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Not Found',
+            ]);
+        }
     }
 }

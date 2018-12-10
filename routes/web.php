@@ -17,13 +17,32 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['prefix' => '/', 'as' => 'root',], function(){
+    Route::get('home', 'HomeController@index')->name('home');
 
-Route::get('/projects/{project_id}', 'HomeController@projectView')->name('projectView');
-Route::get('/projects', 'HomeController@projectMenu')->name('projectMenu');
-Route::post('/projects', 'HomeController@createProject')->name('createProject');
+    Route::group(['prefix' => 'projects', 'as' => 'projects',], function(){
+        Route::get('/', 'HomeController@projectMenu')->name('projectMenu');
+        Route::post('/', 'HomeController@createProject')->name('createProject');
+        Route::get('{project_id}', 'HomeController@projectView')->name('projectView');
+    });
 
-Route::get('/chats', 'HomeController@chatMenu')->name('chatMenu');
-Route::get('/chats/{project_id}', 'HomeController@chatProject')->name('chatProject');
+    Route::group(['prefix' => 'lists', 'as' => 'lists',], function(){
+        Route::post('/', 'HomeController@createList')->name('createList');
+    });
 
-Route::get('/settings', 'HomeController@settingMenu')->name('settingMenu');
+    Route::group(['prefix' => 'cards', 'as' => 'cards',], function(){
+        Route::post('/', 'HomeController@createCard')->name('createCard');
+    });
+
+    // Route::group(['prefix' => 'cards', 'as' => 'cards',], function(){
+    //     Route::post('/', 'HomeController@createCard')->name('createCard');
+    // });
+
+    Route::group(['prefix' => 'chats', 'as' => 'chats',], function(){
+        Route::get('/', 'HomeController@chatMenu')->name('chatMenu');
+        Route::get('{project_id}', 'HomeController@chatProject')->name('chatProject');
+    });
+
+
+    Route::get('settings', 'HomeController@settingMenu')->name('settingMenu');
+});

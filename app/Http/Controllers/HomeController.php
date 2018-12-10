@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Project;
 use App\UserProject;
+use App\ListCard;
+use App\ActivityCard;
+use App\Checklist;
 use App\Http\Libraries\ProjectLibrary;
 
 class HomeController extends Controller
@@ -89,6 +92,53 @@ class HomeController extends Controller
         ];
         return view('project', $data);
     }
+
+    public function createList(Request $request){
+        $current_user = Auth::user();
+        $projectId = Project::where('id', $request->project_id);
+        if(!empty($projectId)){
+            $list = ListCard::create([
+                'name' => $request->name,
+                'order' => $projectId->count(),
+                'project_id' => @$projectId->first()->id,
+            ]);
+            $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+            $data = [
+                'projectList' => $projectList,
+                'user' => $current_user,
+            ];
+            return redirect('projects/'.@$projectId->first()->id);
+        }
+        else{
+            return redirect('projects');
+        }
+    }
+
+    public function createCard(Request $request){
+        $current_user = Auth::user();
+        $listId = ListCard::where('id', $request->list_id);
+        if(!empty($listId)){
+            $list = ActivityCard::create([
+                'name' => $request->name,
+                'order' => $listId->count(),
+                'list_card_id' => @$listId->first()->id,
+            ]);
+            $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+            $data = [
+                'projectList' => $projectList,
+                'user' => $current_user,
+            ];
+            return redirect('projects/'.@$listId->first()->project_id);
+        }
+        else{
+            return redirect('projects');
+        }
+    }
+
+    // public function checklistView()
+    // {
+
+    // }
 
     public function chatMenu(){
         $current_user = Auth::user();
