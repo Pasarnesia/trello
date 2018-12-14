@@ -31,6 +31,21 @@ class ProjectController extends Controller
         return Response()->json($data);
     }
 
+    public function getProjectListById($projectId){
+        $projectItem = Project::where('id', $projectId)
+            ->with('userProject.user')
+            ->with('createdBy')
+            ->with(['listCard.activityCard' => function($q){
+                $q->with('transaction.transactionList')->with('priority.color')->with('media')->with('checklist.media');
+            }])
+            ->first();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $projectItem,
+        ]);
+    }
+
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [

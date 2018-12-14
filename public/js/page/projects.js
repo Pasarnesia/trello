@@ -6,16 +6,20 @@ $(document).ready(function(){
     $('#contentTitleId').click(function(){
         $('#addActivityTitle').attr('disabled', false);
         $('#addActivityTitle').focus();
-    })
-    $('#addActivityTitle').keypress(function(e) {
+    });
+    $('#addActivityTitle').keyup(function(e) {
+        dataText = $('#addActivityTitle').val();
+        $('#activityCardId').text(dataText);
         if(e.which == 13) {
             $('#addActivityTitle').attr('disabled', true);
             updateDescriptions($('#activityCardDataId').val(), $('#addActivityTitle').val(), 'name');
+            getProject();
         }
     });
     $('#addActivityTitle').blur(function() {
         $('#addActivityTitle').attr('disabled', true);
         updateDescriptions($('#activityCardDataId').val(), $('#addActivityTitle').val(), 'name');
+        getProject();
     });
 
 // content descriptions
@@ -124,6 +128,32 @@ function getList(listId, type){
     });
 }
 
+function getProject(){
+    csrf_token = $("input[name='_token']").val();
+    projectId = $('#currentProjectId').val();
+    return $.ajax({
+        data: {
+            _token: csrf_token,
+        },
+        type: 'GET',
+        url: '/api/project/'+projectId,
+        success: function(response) {
+            window.store = response.data;
+            $('#currentProjectTitle').text(window.store.name);
+            $('#currentProjectCreator').text(window.store.created_by.name);
+            $('#currentProjectCity').text(window.store.address);
+            var User = "";
+            i = 0;
+            window.store.user_project.forEach(function(element) {
+                User = (i==0)?element.user.name:User + ", " + element.user.name;
+                i++;
+            });
+            $('#currentProjectUser').text(User);
+            listItems(window.store.list_card);
+        },
+    });
+}
+
 function getActivity(activityId, type){
     csrf_token = $("input[name='_token']").val();
     return $.ajax({
@@ -184,7 +214,8 @@ function updateDescriptions(activityId, value, type){
       type: 'PUT',
       url: '/api/project/list/'+listId+'/update/',
       success: function(response) {
-          window.location.reload();
+        //   window.location.reload();
+        getProject();
       },
     });
   }
@@ -198,7 +229,8 @@ function updateDescriptions(activityId, value, type){
       type: 'DELETE',
       url: '/api/project/list/'+listId+'/delete/',
       success: function(response) {
-          window.location.reload();
+          getProject();
+          detailListModal(0);
       },
     });
   }
@@ -212,14 +244,15 @@ function updateDescriptions(activityId, value, type){
       type: 'DELETE',
       url: '/api/project/activity/'+activityId+'/delete/',
       success: function(response) {
-          window.location.reload();
+        getProject();
+        checklistViewShow(0);
       },
     });
   }
 
 
 function listItems(list){
-    htmlData = '';
+    htmlData = '<div class="add-new-list" onclick="listAddShow(1)">&nbsp;<span class="fa fa-plus"></span>&nbsp;Add a new list</div>';
     list.forEach(function(data){
         htmlData = htmlData + '<div class="card-list"><div onclick="detailListModal(1, '+data.id+')" class="card-title" style="cursor:pointer;">'+data.name+'<div class="card-setting-button" title="List Setting"><div style="cursor:pointer;"><span class="fa fa-circle"></span><span class="fa fa-circle"></span><span class="fa fa-circle"></span></div></div></div>';
         data.activity_card.forEach(function(activity){
@@ -229,5 +262,5 @@ function listItems(list){
         htmlData = htmlData + '<div class="new-card" onclick="cardAddShow(1, '+data.id+')"><span class="fa fa-plus"></span>&nbsp;Add New Card</div></div>';
     });
 
-    $('#cardListId').html(htmlData+'<div class="add-new-list" onclick="listAddShow(1)">&nbsp;<span class="fa fa-plus"></span>&nbsp;Add a new list</div>');
+    $('#cardListId').html(htmlData);
 }

@@ -4,28 +4,29 @@
     <script type="text/javascript" src="{{ asset('js/page/projects.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            getProjectData();
+            getProject();
         });
         
-        function getProjectData(){
-            window.store = JSON.parse(@json(@$projectArray));
-            $('#currentProjectTitle').text(window.store.name);
-            $('#currentProjectCreator').text(window.store.created_by.name);
-            $('#currentProjectCity').text(window.store.address);
-            var User = "";
-            i = 0;
-            window.store.user_project.forEach(function(element) {
-                User = (i==0)?element.user.name:User + ", " + element.user.name;
-                i++;
-            });
-            $('#currentProjectUser').text(User);
-            listItems(window.store.list_card);
-        }
+        // function getProjectData(){
+        //     window.store = JSON.parse(@json(@$projectArray));
+        //     $('#currentProjectTitle').text(window.store.name);
+        //     $('#currentProjectCreator').text(window.store.created_by.name);
+        //     $('#currentProjectCity').text(window.store.address);
+        //     var User = "";
+        //     i = 0;
+        //     window.store.user_project.forEach(function(element) {
+        //         User = (i==0)?element.user.name:User + ", " + element.user.name;
+        //         i++;
+        //     });
+        //     $('#currentProjectUser').text(User);
+        //     listItems(window.store.list_card);
+        // }
     </script>
 
 @endsection
 
 @section('project-details')
+<input type="hidden" id="currentProjectId" value="{{ @$currentProject->id }}"/>
     <div class="project-details">
         @if(!empty(@$currentProject->listCard))
             <b>
