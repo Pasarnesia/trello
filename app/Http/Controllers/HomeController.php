@@ -165,4 +165,12 @@ class HomeController extends Controller
         ];
         return view('settings', $data);
     }
+    public function team(){
+        $current_user = Auth::user();
+        $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $data = [
+            'projectList' => $projectList,
+        ];
+        return view('team', $data);
+    }
 }

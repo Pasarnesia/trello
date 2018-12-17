@@ -86,6 +86,14 @@ function projectAddShow(val)
     (val == 0)?$('#addProject').hide():$('#addProject').show();
 }
 
+function projectUpdateShow(val, name, cost, address)
+{
+    (val == 0)?$('#updateProject').hide():$('#updateProject').show();
+    $('#projectNameIdUpdate').val(name);
+    $('#projectCostIdUpdate').val(cost);
+    $('#projectAddressIdUpdate').val(address);
+}
+
 function detailListModal(val, data)
 {
     (val == 0) ? $('#listDetailModalId').hide() : $('#listDetailModalId').show();
@@ -150,6 +158,31 @@ function getProject(){
             });
             $('#currentProjectUser').text(User);
             listItems(window.store.list_card);
+        },
+    });
+}
+
+function updateProject(){
+    csrf_token = $("input[name='_token']").val();
+    projectId = $('#currentProjectId').val();
+    name = $('#projectNameIdUpdate').val();
+    cost = $('#projectCostIdUpdate').val();
+    address = $('#projectAddressIdUpdate').val();
+    return $.ajax({
+        data: {
+            _token: csrf_token,
+            name: name,
+            cost: cost,
+            address: address,
+        },
+        type: 'PUT',
+        url: '/api/project/'+projectId+'/update/',
+        success: function(response) {
+           if(response.status == 'success'){
+            // projectUpdateShow(0);
+            // getProject();
+            window.location.reload();
+           }
         },
     });
 }

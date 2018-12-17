@@ -56,6 +56,36 @@ class ProjectController extends Controller
         }
     }
 
+    public function updateProject($id, Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->messages()], 400);
+        }
+
+        $project = @Project::where('id', $id)->first();
+        if($project != null){
+            $project->update([
+                'name' => $request->name,
+                'cost' => $request->cost,
+                'address' => $request->address,
+            ]);
+            $project->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Project data already updated',
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Project data not found',
+            ]);
+        }
+    }
+
     public function updateDescription(Request $request)
     {
         $activityId = $request->activityId;

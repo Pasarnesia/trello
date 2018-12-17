@@ -7,6 +7,7 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
     Route::post('create', ['as'=> 'create', 'uses'=> 'ProjectController@create']);
     Route::group(['prefix'=> '{project_id}'], function(){
         Route::get('/', ['as'=> 'root', 'uses'=> 'ProjectController@getProjectListById']);
+        Route::put('update', ['as'=> 'update', 'uses'=> 'ProjectController@updateProject']);
     });
 
     Route::group(['prefix'=> 'list', 'as'=> 'list.',], function(){

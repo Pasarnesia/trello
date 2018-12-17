@@ -29,7 +29,7 @@
 <input type="hidden" id="currentProjectId" value="{{ @$currentProject->id }}"/>
     <div class="project-details">
         @if(!empty(@$currentProject->listCard))
-            <b>
+            <b onclick="projectUpdateShow(1, '{{ @$currentProject->name }}', '{{ @$currentProject->cost }}', '{{ @$currentProject->address }}')" style="cursor: pointer;" >
                 <span id="currentProjectTitle"></span>
                 &nbsp;
                 <span class="fa fa-pencil"></span>
@@ -40,6 +40,25 @@
             <br/>
         @else
             <b>Projects</b>
+            <div class="container-fluid" style="margin-top: 20px;">
+              @foreach($projectList as $projectItems)
+              <div class="col-md-3" style="margin-bottom:35px;">
+                <a href="/projects/{{ $projectItems->id }}">
+                <div class="btn btn-info btn-block" style="
+                  height: 90px;
+                  font-size: 16px;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  text-align: left;
+                  background-image: linear-gradient(to right, #000066, #03183b);
+                ">
+                  <span style="font-weight: bold; text-transform: uppercase;">{{ $projectItems->name }}</span>
+                </div>
+                </a>
+              </div>
+              @endforeach
+            </div>
         @endif
     </div>
 @endsection
@@ -102,6 +121,35 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+<!-- update project details -->
+    <div class="popup-modal" id="updateProject">
+        <div class="popup-content">
+            <div class="close-button" onclick="projectUpdateShow(0)">
+                <span class="fa fa-close"></span>
+            </div>
+            <h4>Update Project</h4>
+            <hr style="border: 2px solid #000066;">
+            <div class="popup-form">
+                <label>Project Name</label>
+                <input type="text" name="name" class="form-control" id="projectNameIdUpdate" /><br>
+                <label>Project Cost</label>
+                <input type="number" name="cost" class="form-control" id="projectCostIdUpdate"/><br>
+                <label>Address</label>
+                <input type="text" name="address" class="form-control" id="projectAddressIdUpdate"/><br>
+                <div class="popup-footer">
+                    <button class="btn btn-primary" style="background: #000066" onclick="updateProject()">
+                        <span class="fa fa-save"></span>
+                        &nbsp; Save
+                    </button>
+                    <div class="btn btn-default" onclick="projectUpdateShow(0)">
+                        <span class="fa fa-close"></span>
+                        &nbsp; Cancel
+                    </div>
+                </div>
             </div>
         </div>
     </div>

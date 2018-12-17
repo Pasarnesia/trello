@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::group(['prefix' => '/', 'as' => 'root',], function(){
     Route::get('home', 'HomeController@index')->name('home');
+    Route::get('team', 'HomeController@team')->name('team');
 
     Route::group(['prefix' => 'projects', 'as' => 'projects',], function(){
         Route::get('/', 'HomeController@projectMenu')->name('projectMenu');
