@@ -15,13 +15,13 @@
      </script>
 @endsection
 @section('container-project')
-    <a href="#" style="text-decoration: none">
-        <div class="project-items" style="background:#00003b;">
+    <a href="/home/" style="text-decoration: none">
+        <div class="project-items">
             <span class="fa fa-circle"></span>&nbsp;&nbsp; Your Projects
         </div>
     </a>
-    <a href="/team/" style="text-decoration: none">
-        <div class="project-items">
+    <a href="#" style="text-decoration: none">
+        <div class="project-items" style="background:#00003b;">
             <span class="fa fa-circle"></span>&nbsp;&nbsp; Your Teams
         </div>
     </a>
@@ -30,7 +30,7 @@
 @section('container-full')
     <div class="container-fluid">
       @foreach($projectList as $projectItems)
-      <div class="col-md-3" style="margin-bottom:35px;">
+     <!--  <div class="col-md-3" style="margin-bottom:35px;">
         <a href="/projects/{{ $projectItems->id }}">
         <div class="btn btn-info btn-block" style="
           height: 90px;
@@ -44,7 +44,7 @@
           <span style="font-weight: bold; text-transform: uppercase;">{{ $projectItems->name }}</span>
         </div>
         </a>
-      </div>
+      </div> -->
       @endforeach
     </div>
 @endsection
