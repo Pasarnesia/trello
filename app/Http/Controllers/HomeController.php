@@ -152,7 +152,7 @@ class HomeController extends Controller
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
             'projectList' => $projectList,
-            'projects' => Project::where('id', $projectId)->first(),
+            'currentProject' => Project::where('id', $projectId)->first(),
         ];
         return view('chatproject', $data);
     }
@@ -162,15 +162,54 @@ class HomeController extends Controller
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
             'projectList' => $projectList,
+            'current_user' => $current_user,
         ];
         return view('settings', $data);
     }
-    public function team(){
+
+    public function team()
+    {
         $current_user = Auth::user();
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
             'projectList' => $projectList,
         ];
         return view('team', $data);
+    }
+
+    public function resetPassword()
+    {
+        $current_user = Auth::user();
+        $data = [
+            'current_user' => $current_user,
+        ];
+        return view('reset', $data);
+    }
+
+    public function helps()
+    {
+        $current_user = Auth::user();
+        $data = [
+            'current_user' => $current_user,
+        ];
+        return view('helps', $data);
+    }
+
+    public function workspaceSettings()
+    {
+        $current_user = Auth::user();
+        $data = [
+            'current_user' => $current_user,
+        ];
+        return view('workspace', $data);
+    }
+
+    public function feedback()
+    {
+        $current_user = Auth::user();
+        $data = [
+            'current_user' => $current_user,
+        ];
+        return view('feedback', $data);
     }
 }

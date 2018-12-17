@@ -46,4 +46,8 @@ Route::group(['prefix' => '/', 'as' => 'root',], function(){
 
 
     Route::get('settings', 'HomeController@settingMenu')->name('settingMenu');
+    Route::get('reset', 'HomeController@resetPassword')->name('resetPassword');
+    Route::get('workspace', 'HomeController@workspaceSettings')->name('workspaceSettings');
+    Route::get('helps', 'HomeController@helps')->name('helps');
+    Route::get('feedback', 'HomeController@feedback')->name('feedback');
 });

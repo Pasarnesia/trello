@@ -3,13 +3,13 @@
 <script type="text/javascript" src="{{ asset('js/page/settings.js') }}"></script>
 @endsection
 @section('container-project')
-    <a href="#" style="text-decoration: none">
-        <div class="project-items" style="background:#00003b;">
+    <a href="/settings/" style="text-decoration: none">
+        <div class="project-items">
             <span class="fa fa-circle"></span>&nbsp;&nbsp; User Settings
         </div>
     </a>
-    <a href="/reset/" style="text-decoration: none">
-        <div class="project-items">
+    <a href="#" style="text-decoration: none">
+        <div class="project-items" style="background:#00003b;">
             <span class="fa fa-circle"></span>&nbsp;&nbsp; Reset Password
         </div>
     </a>
@@ -34,18 +34,16 @@
     <div>
         <form>
             <div class="user-settings">
-                <label>Name</label>
-                <input type="text" name="username" class="form-control" value="{{ $current_user->name }}">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" value="{{ $current_user->email }}">
+                <label>Old Password</label>
+                <input type="password" name="oldpass" class="form-control">
+                <label>New Password</label>
+                <input type="password" name="pass1" class="form-control" >
+                <label>Confirm New Password</label>
+                <input type="password" name="pass2" class="form-control" >
                 <br>
                 <button class="btn btn-primary">
-                    <span class="fa fa-pencil"></span>
-                    Edit
-                </button>
-                <button class="btn btn-primary">
                     <span class="fa fa-save"></span>
-                    Save
+                    Change Password
                 </button>
             </div>
         </form>
@@ -54,6 +52,6 @@
 
 @section('project-details')
     <div class="project-details">
-        <b>User Settings</b>
+        <b>Change Password</b>
     </div>
 @endsection
