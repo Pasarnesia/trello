@@ -17,6 +17,7 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
             Route::delete('delete', ['as'=> 'delete', 'uses'=> 'ProjectController@deleteListCard']);
         });
     });
+
     Route::group(['prefix'=> 'activity', 'as'=> 'activity.',], function(){
         Route::post('/', ['as'=> 'root', 'uses'=> 'ProjectController@getActivityCard']);
         Route::post('description', ['as'=> 'description', 'uses'=> 'ProjectController@updateDescription']);
@@ -24,4 +25,23 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
             Route::delete('delete', ['as'=> 'delete', 'uses'=> 'ProjectController@deleteActivityCard']);
         });
     });
+
+    Route::group(['prefix'=> 'checklist', 'as'=> 'checklist.',], function(){
+        Route::post('/', ['as'=> 'root', 'uses'=> 'ProjectController@getChecklistCard']);
+        Route::post('create', ['as'=> 'create', 'uses'=> 'ProjectController@createChecklist']);
+        Route::group(['prefix'=> '{Checklist_id}'], function(){
+            Route::put('update', ['as'=> 'update', 'uses'=> 'ProjectController@updateChecklist']);
+            Route::delete('delete', ['as'=> 'delete', 'uses'=> 'ProjectController@deleteChecklist']);
+        });
+    });
+
+    Route::group(['prefix'=> 'chat', 'as'=> 'chat.',], function(){
+        Route::get('get', ['as'=> 'get', 'uses'=> 'ProjectController@getChat']);
+        Route::post('create', ['as'=> 'description', 'uses'=> 'ProjectController@createChat']);
+        Route::group(['prefix'=> '{chat_id}'], function(){
+            Route::put('update', ['as'=> 'update', 'uses'=> 'ProjectController@updateChat']);
+            Route::delete('delete', ['as'=> 'delete', 'uses'=> 'ProjectController@deleteChat']);
+        });
+    });
+
 });

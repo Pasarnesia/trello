@@ -145,4 +145,28 @@ class ProjectController extends Controller
         $activity = ActivityCard::where('id', $id)->first();
         $activity->delete();
     }
+
+    // Chat
+    public function getChat(Request $request)
+    {
+        return response()->json([
+            'data' => 'asdasdasdas',
+            'message' => 'asdasdasdasdas',
+        ]);
+    }
+
+    public function createChat(Request $request)
+    {
+        return $request->all();
+    }
+
+    public function updateChat($id, Request $request)
+    {
+        return $request->all();
+    }
+
+    public function deleteChat($id)
+    {
+        return $request->all();
+    }
 }

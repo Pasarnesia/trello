@@ -118,6 +118,11 @@ function checklistViewShow(val, data)
     getActivity(data, 'checklistViewShow');
 }
 
+function addCheckList(val)
+{
+    (val == 0)?$('#addCheckList').hide():$('#addCheckList').show();
+}
+
 function getList(listId, type){
     csrf_token = $("input[name='_token']").val();
     return $.ajax({

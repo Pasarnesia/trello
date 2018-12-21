@@ -15,17 +15,18 @@
         <link href="{{ asset('css/workspace.css') }}" rel="stylesheet">
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
         <script type="text/javascript" src="{{ asset('js/jquery/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/page/index.js') }}"></script>
         @yield('extrajs')
     </head>
         <body>
-            <div class="project-name">
+                <div class="project-name">
                     Work Plan App
                 </div>
-                <div class="container-project">
+                <div class="container-project" onclick="notificationShow(0)">
                     @yield('container-project')
                 </div>
                 
-                <div class="container-icon">
+                <div class="container-icon" onclick="notificationShow(0)">
                     <a href="/home/" style="text-decoration: none; color:unset;">
                         <div class="icon-items" title="Dashboard" id="dashboardIconId">
                             <span class="fa fa-home"></span>
@@ -60,10 +61,22 @@
 
                 </div>
                 @yield('project-details')
-                <div class="container-full">
+                <div class="container-full" onclick="notificationShow(0)">
                     @yield('container-full')
                 </div>
                 @yield('chat')
                 @yield('popup')
+                <div class="notification-button">
+                    <div class="circle-button" onclick="notificationShow(1)">
+                        <span class="fa fa-bell"></span>
+                    </div>
+                </div>
+                <div class="notification-bar" id="notifBarId">
+                    <div class="header-notification">
+                        <h4 align="center">Notification</h4>
+                        <span class="fa fa-close close-button" onclick="notificationShow(0)"></span>
+                        <hr>
+                    </div>
+                </div>
     </body>
 </html>

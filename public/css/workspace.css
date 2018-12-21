@@ -210,6 +210,16 @@ body{
     padding: 10px;
     box-shadow: rgba(0,0,0,0.5) 0px 0px 50px 4px;
 }
+.popup-content-children{
+    text-align: center;
+    background: #dadade;
+    width: 20%;
+    position: fixed;
+    top: 20%;
+    padding: 15px;
+    right: 15%;
+    border-radius: 5px;
+}
 h4{
     color: #000;
     font-weight: bold;
@@ -281,4 +291,75 @@ h4{
     width: 60%;
     /*position: relative;*/
     margin-left: 20px;
+}
+
+.chat-feed-sender{
+    min-height: 30px;
+    background: #f7f7f7;
+    max-width: 500px;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: normal;
+    margin: 10px;
+}
+.chat-feed-receiver{
+    min-height: 30px;
+    background: #03183b1a;
+    max-width: 500px;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: normal;
+    margin: 10px;
+    float: right;
+}
+.chat-sender{
+    display: block;
+    font-weight: bold;
+}
+.chat-time{
+    display: block;
+    font-weight: bold;
+    font-style: italic;   
+}
+.notification-button{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+.circle-button{
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: #000066;
+    text-align: center;
+    padding: 10px;
+    color: #fff;
+    font-size: 25px;
+    cursor: pointer;
+}
+.circle-button:hover{
+    width: 61px;
+    height: 61px;
+    background: #03183b;
+}
+.notification-bar{
+    position: fixed;
+    height: 100%;
+    width: 300px;
+    right: 0px;
+    top: 0px;
+    background: #dadade;
+    border: 2px solid #f7f7f7;
+    padding: 10px;
+    z-index: 2;
+    display: none;
+}
+.header-notification{
+    position: relative;
+}
+.close-button{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
 }

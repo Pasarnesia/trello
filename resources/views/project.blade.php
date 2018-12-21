@@ -254,7 +254,7 @@
                     <span class="fa fa-check-square"></span>
                     <label>Checklist</label><br/>
                     <div class="popup-panel-content">
-                        <button class="btn btn-default">
+                        <button class="btn btn-default" onclick="addCheckList(1)">
                             <span class="fa fa-plus"></span>
                             Add Checklist
                         </button>
@@ -263,10 +263,13 @@
                 <button class="btn btn-danger" id="deleteActivityCardId">
                     <span class="fa fa-trash"></span> Delete
                 </button>
+                <button class="btn btn-default" onclick="checklistViewShow(0)">
+                    <span class="fa fa-trash"></span> Close
+                </button>
             </div>
         </div>
 
-        <div class="popup-content" style="margin-bottom: 20%; display:none;" id="transactionContentId">
+        <div class="popup-content" style="display: none;" id="transactionContentId">
             <div class="close-button" onclick="viewTransaction(0)">
                 <span class="fa fa-close"></span>
             </div>
@@ -276,6 +279,20 @@
                 adadasdasdasd
             </div>
         </div>
+
+        <div class="popup-content-children" style="display:none;" id="addCheckList">
+            <div class="close-button" onclick="addCheckList(0)">
+                <span class="fa fa-close"></span>
+            </div>
+            <h4>Add Checklist</h4>
+            <hr style="margin: 0px;">
+            <div class="popup-form">
+                <label>Checklist Name</label>
+                <input type="text" class="form-control" id="addNewChecklistName" style="margin: ">
+                <button class="btn btn-default"><span class="fa fa-plus"></span> Add</button>
+            </div>
+        </div>
+
     </div>
 
     <div class="popup-modal" id="listDetailModalId">
