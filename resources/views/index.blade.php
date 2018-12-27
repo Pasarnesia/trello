@@ -14,6 +14,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('css/workspace.css') }}" rel="stylesheet">
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+        @yield('extrastyle')
         <script type="text/javascript" src="{{ asset('js/jquery/jquery.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/page/index.js') }}"></script>
         @yield('extrajs')
@@ -48,8 +49,7 @@
                         </div>
                     </a>
                     <a href="#" style="text-decoration: none; color:unset;"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();"
+                        onclick="modalLogout(1)"
                     >
                         <div class="icon-items" title="Logout" id="logoutIconId">
                             <span class="fa fa-power-off"></span>
@@ -66,6 +66,35 @@
                 </div>
                 @yield('chat')
                 @yield('popup')
+                  <div class="popup-modal" id="modalLogout">
+                    <div class="popup-content" >
+                        <div class="close-button" onclick="modalLogout(0)">
+                            <span class="fa fa-close"></span>
+                        </div>
+                        <h4>Logout</h4>
+                        <hr style="border: 2px solid #000066;">
+                        <label>Are you sure to logout?</label>
+                        <div>
+                        </div>
+                        <br>
+                        <div class="popup-footer">
+                            <button class="btn btn-default" onclick="modalLogout(0)">
+                                <span class="fa fa-close"></span>
+                                &nbsp; Cancel
+                            </button>
+                            <button class="btn btn-danger" 
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();"
+                            >
+                            <span class="fa fa-sign-out"></span>
+                            Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <div class="notification-button">
                     <div class="circle-button" onclick="notificationShow(1)">
                         <span class="fa fa-bell"></span>

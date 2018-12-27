@@ -1,6 +1,10 @@
 @extends('home')
 
+@section('extrastyle')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+@endsection
 @section('extrajs')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/page/projects.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -35,8 +39,18 @@
                 <span class="fa fa-pencil"></span>
             </b> 
             | <span id="currentProjectCreator"></span>
-            | <span id="currentProjectUser"></span>
+            | 
+                <div class="userProject" id="currentProjectUser">
+                </div>
             | <span id="currentProjectCity"></span>
+            |
+            <button class="btn btn-primary" style="padding: 2px 10px;" title="Add Member" onclick="addMemberModal(1)">
+                <span class="fa fa-user-plus"></span>
+            </button>
+            <button class="btn btn-danger" style="padding: 2px 10px;" title="Delete Project">
+                <span class="fa fa-trash"></span>
+            </button>
+
             <br/>
         @else
             <b>Projects</b>
@@ -318,6 +332,38 @@
                     &nbsp; Cancel
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="popup-modal" id="modalAddMember">
+        <div class="popup-content" >
+        <form method="POST" action="/projects/{{ $projectItem->id }}/user-project/">
+        {{ csrf_field() }}
+            <div class="close-button" onclick="addMemberModal(0)">
+                <span class="fa fa-close"></span>
+            </div>
+            <h4>Add Member to Project</h4>
+            <hr style="border: 2px solid #000066;">
+            <label>Find Member</label>
+            <div>
+                <!-- <input type="text" class="form-control"> -->
+                <select id="addMemberList" name="user_id">
+                    <option value="0">---</option>
+                    @if(isset($userList))
+                    @foreach ($userList as $userItem)
+                    <option value="{{ $userItem->id }}">{{ $userItem->name }} ({{ $userItem->email }})</option>
+                    @endforeach
+                    @endif
+                </select>
+            </div>
+            <br>
+            <div class="popup-footer">
+                <button class="btn btn-primary" type="submit">
+                    <span class="fa fa-save"></span>
+                    &nbsp; Save
+                </button>
+            </div>
+        </form>
         </div>
     </div>
 @endsection

@@ -79,11 +79,20 @@ $(document).ready(function(){
     $('#deleteActivityCardId').click(function(){
         deleteActivity($('#activityCardDataId').val());
     })
+
+// list name
+    $('#addMemberList').select2({ width: 'resolve' });
+
 })
 
 function projectAddShow(val)
 {
     (val == 0)?$('#addProject').hide():$('#addProject').show();
+}
+
+function addMemberModal(val)
+{
+    (val == 0)?$('#modalAddMember').hide():$('#modalAddMember').show();
 }
 
 function projectUpdateShow(val, name, cost, address)
@@ -156,12 +165,10 @@ function getProject(){
             $('#currentProjectCreator').text(window.store.created_by.name);
             $('#currentProjectCity').text(window.store.address);
             var User = "";
-            i = 0;
             window.store.user_project.forEach(function(element) {
-                User = (i==0)?element.user.name:User + ", " + element.user.name;
-                i++;
+                User = User + '<span class="btn btn-warning userProjectBundle" title="'+element.user.name+'">'+element.user.name.substr(0,1)+"</span>";
             });
-            $('#currentProjectUser').text(User);
+            $('#currentProjectUser').html(User);
             listItems(window.store.list_card);
         },
     });

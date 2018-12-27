@@ -9,6 +9,7 @@ use App\UserProject;
 use App\ListCard;
 use App\ActivityCard;
 use App\Checklist;
+use App\User;
 use App\Http\Libraries\ProjectLibrary;
 
 class HomeController extends Controller
@@ -44,22 +45,7 @@ class HomeController extends Controller
 
     public function projectView($projectId){
         $current_user = Auth::user();
-        $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
-        
-        $projectItem = Project::where('id', $projectId)
-            ->with('userProject.user')
-            ->with('createdBy')
-            ->with(['listCard.activityCard' => function($q){
-                $q->with('transaction.transactionList')->with('priority.color')->with('media')->with('checklist.media');
-            }])
-            ->first()
-            ;
-        $data = [
-            'projectList' => $projectList,
-            'currentProject' => $projectItem,
-            'projectArray' => json_encode($projectItem->toArray()),
-            'user' => $current_user,
-        ];
+        $data = $this->projectLib->getProjectById($projectId, $current_user->id);
         return view('project', $data);
     }
 
@@ -69,6 +55,7 @@ class HomeController extends Controller
         $data = [
             'projectList' => $projectList,
             'user' => $current_user,
+            'userList' => [],
         ];
         return view('project', $data);
     }
@@ -93,6 +80,22 @@ class HomeController extends Controller
             'projectList' => $projectList,
             'user' => $current_user,
         ];
+        return view('project', $data);
+    }
+
+    public function addUserProject($projectId, Request $request)
+    {
+        $current_user = Auth::user();
+        $userId = $request->user_id;
+        $userExist = User::find($userId);
+        if(!empty($userExist)){
+            UserProject::create([
+                'project_id' => $projectId,
+                'user_id' => $userId,
+                'user_level_id' => 1,
+            ]);
+        }
+        $data = $this->projectLib->getProjectById($projectId, $current_user->id);
         return view('project', $data);
     }
 
@@ -171,9 +174,18 @@ class HomeController extends Controller
     {
         $current_user = Auth::user();
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $projectArray = [];
+        foreach ($projectList as $key => $value) {
+            $projectArray[] = $value->id;
+        }
+
+        $userProject = UserProject::whereIn('project_id', $projectArray)->whereNotIn('user_id', [$current_user->id])->with('user')->get()->unique('user_id');
+
         $data = [
             'projectList' => $projectList,
+            'userProject' => $userProject,
         ];
+
         return view('team', $data);
     }
 

@@ -29,9 +29,8 @@
 
 @section('container-full')
     <div class="container-fluid">
-      @foreach($projectList as $projectItems)
-     <!--  <div class="col-md-3" style="margin-bottom:35px;">
-        <a href="/projects/{{ $projectItems->id }}">
+      @foreach($userProject as $userItem)
+      <div class="col-md-3" style="margin-bottom:35px;">
         <div class="btn btn-info btn-block" style="
           height: 90px;
           font-size: 16px;
@@ -41,10 +40,15 @@
           text-align: left;
           background-image: linear-gradient(to right, #000066, #03183b);
         ">
-          <span style="font-weight: bold; text-transform: uppercase;">{{ $projectItems->name }}</span>
+          <span style="font-weight: bold; text-transform: uppercase;">
+            {{ $userItem->user->name }}
+          </span>
+          <br>
+          <span style="font-style: italic;">
+            {{ $userItem->user->email }}
+          </span>
         </div>
-        </a>
-      </div> -->
+      </div>
       @endforeach
     </div>
 @endsection

@@ -7,7 +7,7 @@ body{
     background-color: #dadade;
     /* background-color: #6f74dd; */
     padding-left: 310px;
-    padding-top: 40px;
+    padding-top: 50px;
     position: fixed;
     height: 100%;
     z-index: 0;
@@ -15,7 +15,6 @@ body{
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    top: 20;
     right: 0;
     bottom: 0;
     left: 0;
@@ -304,7 +303,7 @@ h4{
 }
 .chat-feed-receiver{
     min-height: 30px;
-    background: #03183b1a;
+    background: #d2ffea;
     max-width: 500px;
     padding: 10px;
     border-radius: 5px;
@@ -348,11 +347,13 @@ h4{
     width: 300px;
     right: 0px;
     top: 0px;
-    background: #dadade;
+    /*background: #dadade;*/
+    background: #fff;
     border: 2px solid #f7f7f7;
     padding: 10px;
     z-index: 2;
     display: none;
+    box-shadow: 5px 5px 15px 5px #000;
 }
 .header-notification{
     position: relative;
@@ -362,4 +363,18 @@ h4{
     right: 10px;
     top: 5px;
     cursor: pointer;
+}
+.select2 {
+    width:100%!important;
+}
+.userProject{
+    display: inline;
+}
+.userProjectBundle{
+    padding:5px;
+    width:30px;
+    border-radius:15px !important;
+    text-transform:uppercase;
+    font-weight:bold;
+    margin-left: 2px;
 }

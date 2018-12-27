@@ -24,7 +24,10 @@ Route::group(['prefix' => '/', 'as' => 'root',], function(){
     Route::group(['prefix' => 'projects', 'as' => 'projects',], function(){
         Route::get('/', 'HomeController@projectMenu')->name('projectMenu');
         Route::post('/', 'HomeController@createProject')->name('createProject');
-        Route::get('{project_id}', 'HomeController@projectView')->name('projectView');
+        Route::group(['prefix' => '{project_id}',], function(){
+            Route::get('/', 'HomeController@projectView')->name('projectView');
+            Route::post('user-project', 'HomeController@addUserProject');
+        });
     });
 
     Route::group(['prefix' => 'lists', 'as' => 'lists',], function(){
