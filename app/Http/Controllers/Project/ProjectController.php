@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Project;
 use App\ActivityCard;
 use App\ListCard;
+use App\Transaction;
+use App\TransactionList;
 
 use Illuminate\Http\Request;
 use Validator;
@@ -86,6 +88,13 @@ class ProjectController extends Controller
         }
     }
 
+    public function deleteProject($projectId){
+        $projectExist = Project::where('id', $projectId);
+        if (!empty($projectExist)) {
+            $projectExist->delete();
+        }
+    }
+
     public function updateDescription(Request $request)
     {
         $activityId = $request->activityId;
@@ -110,7 +119,7 @@ class ProjectController extends Controller
     }
 
     public function getActivityCard(Request $request){
-        $activity = ActivityCard::where('id', $request->activityId);
+        $activity = ActivityCard::where('id', $request->activityId)->with('transaction.transactionList');
         return @$activity->first();
     }
 

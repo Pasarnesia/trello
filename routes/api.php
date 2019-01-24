@@ -8,6 +8,7 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
     Route::group(['prefix'=> '{project_id}'], function(){
         Route::get('/', ['as'=> 'root', 'uses'=> 'ProjectController@getProjectListById']);
         Route::put('update', ['as'=> 'update', 'uses'=> 'ProjectController@updateProject']);
+        Route::delete('delete', ['as'=> 'delete', 'uses'=> 'ProjectController@deleteProject']);
     });
 
     Route::group(['prefix'=> 'list', 'as'=> 'list.',], function(){
@@ -42,6 +43,10 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
             Route::put('update', ['as'=> 'update', 'uses'=> 'ProjectController@updateChat']);
             Route::delete('delete', ['as'=> 'delete', 'uses'=> 'ProjectController@deleteChat']);
         });
+    });
+
+    Route::group(['prefix'=> 'transaction', 'as'=> 'transaction.',], function(){
+        Route::get('get', ['as'=> 'get', 'uses'=> 'ProjectController@getTransaction']);
     });
 
 });

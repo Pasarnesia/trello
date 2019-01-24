@@ -21,7 +21,7 @@ class ProjectLibrary
 
     public function getProjectById($projectId, $current_user)
     {
-        $projectList = $this->getProjectListByUserId($current_user);
+        $projectList = $this->getProjectListByUserId($current_user->id);
         $projectItem = Project::where('id', $projectId)
             ->with('userProject.user')
             ->with('createdBy')

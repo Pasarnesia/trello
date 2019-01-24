@@ -45,7 +45,7 @@ class HomeController extends Controller
 
     public function projectView($projectId){
         $current_user = Auth::user();
-        $data = $this->projectLib->getProjectById($projectId, $current_user->id);
+        $data = $this->projectLib->getProjectById($projectId, $current_user);
         return view('project', $data);
     }
 
@@ -153,9 +153,10 @@ class HomeController extends Controller
     public function chatProject($projectId){
         $current_user = Auth::user();
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $currentProject = Project::where('id', $projectId)->first();
         $data = [
             'projectList' => $projectList,
-            'currentProject' => Project::where('id', $projectId)->first(),
+            'currentProject' => $currentProject,
         ];
         return view('chatproject', $data);
     }

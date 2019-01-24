@@ -38,16 +38,16 @@
                 &nbsp;
                 <span class="fa fa-pencil"></span>
             </b> 
-            | <span id="currentProjectCreator"></span>
-            | 
+            {{-- | <span id="currentProjectCreator"></span> --}}
+            {{-- | 
                 <div class="userProject" id="currentProjectUser">
                 </div>
-            | <span id="currentProjectCity"></span>
+            | <span id="currentProjectCity"></span> --}}
             |
             <button class="btn btn-primary" style="padding: 2px 10px;" title="Add Member" onclick="addMemberModal(1)">
                 <span class="fa fa-user-plus"></span>
             </button>
-            <button class="btn btn-danger" style="padding: 2px 10px;" title="Delete Project">
+            <button class="btn btn-danger" style="padding: 2px 10px;" title="Delete Project" onclick="modalDeleteProject(1)">
                 <span class="fa fa-trash"></span>
             </button>
 
@@ -120,6 +120,8 @@
                     <br/>
                     <label>Project Name</label>
                     <input type="text" name="name" class="form-control" required/><br>
+                    <label>Description</label>
+                    <textarea name="description" class="form-control"></textarea><br>
                     <label>Project Cost</label>
                     <input type="number" name="cost" class="form-control" required/><br>
                     <label>Address</label>
@@ -257,11 +259,7 @@
                 <div class="popup-panel-title">
                     <span class="fa fa-random"></span>
                     <label>Transactions</label><br/>
-                    <div class="popup-panel-content" onclick="viewTransaction(1)">
-                        <button class="btn btn-default">
-                            <span class="fa fa-eye"></span>
-                            View Transaction
-                        </button>
+                    <div id="transactionButton">
                     </div>
                 </div>
                 <div class="popup-panel-title">
@@ -278,19 +276,47 @@
                     <span class="fa fa-trash"></span> Delete
                 </button>
                 <button class="btn btn-default" onclick="checklistViewShow(0)">
-                    <span class="fa fa-trash"></span> Close
+                    <span class="fa fa-close"></span> Close
                 </button>
             </div>
         </div>
 
-        <div class="popup-content" style="display: none;" id="transactionContentId">
+        <div class="popup-content" style="display: none; width:70% !important;" id="transactionContentId">
             <div class="close-button" onclick="viewTransaction(0)">
                 <span class="fa fa-close"></span>
             </div>
             <h4>Transaction List</h4>
             <hr style="border: 2px solid #000066;">
             <div class="popup-form">
-                adadasdasdasd
+                <label>Transaction Name</label>
+                <input type="text" class="form-control" id="transactionName" placeholder="Transaction Name" disabled>
+                <br/>
+                <label>Transaction Lists</label>
+                <div id="transactionListData">
+                    <table class='table table-hover table-stripped'>
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr id="transactionListRows"></tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><input type="text" class="form-control" id="trans_name" placeholder="Name"></td>
+                            <td><input type="text" class="form-control" id="trans_qty" placeholder="Quantity"></td>
+                            <td><input type="text" class="form-control" id="trans_price" placeholder="Price"></td>
+                            <td><button class='btn btn-primary' style="margin-right:2px;"><span class='fa fa-save'></span></button></td>
+                        </tr>
+                    </table>
+                </div>
+                <button class='btn btn-primary'>
+                    <span class='fa fa-save'></span>&nbsp; Save
+                </button>
+                <button class='btn btn-default' onclick="viewTransaction(0)">
+                    <span class='fa fa-close'></span>&nbsp; Cancel
+                </button>
             </div>
         </div>
 
@@ -366,4 +392,29 @@
         </form>
         </div>
     </div>
+
+    <div class="popup-modal" id="modalDeleteProject">
+        <div class="popup-content" >
+            <div class="close-button" onclick="modalDeleteProject(0)">
+                <span class="fa fa-close"></span>
+            </div>
+            <h4>Delete Project</h4>
+            <hr style="border: 2px solid #000066;">
+            <label>Are you sure to delete this project?</label>
+            <div>
+            </div>
+            <br>
+            <div class="popup-footer">
+                <a href="#" class="btn btn-default" onclick="modalDeleteProject(0)">
+                    <span class="fa fa-close"></span>
+                    &nbsp; Cancel
+                </a>
+                <button class="btn btn-danger" onclick="deleteProject({{ $projectItem->id }})">
+                    <span class="fa fa-trash"></span>
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
 @endsection

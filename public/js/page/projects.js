@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     $('#projectIconId').attr('class', 'icon-items icon-active');
 
 // content title
@@ -103,10 +102,11 @@ function projectUpdateShow(val, name, cost, address)
     $('#projectAddressIdUpdate').val(address);
 }
 
-function detailListModal(val, data)
+function detailListModal(val, data, listData)
 {
     (val == 0) ? $('#listDetailModalId').hide() : $('#listDetailModalId').show();
-    getList(data, 'detailListModal');
+    console.log(listData);
+    getList(listData, 'detailListModal');
 }
 
 
@@ -121,10 +121,11 @@ function cardAddShow(val, listId)
     $('#listCardId').val(listId);
 }
 
-function checklistViewShow(val, data)
+function checklistViewShow(val, data, listData)
 {
     (val == 0)?$('#checklistView').hide():$('#checklistView').show();
-    getActivity(data, 'checklistViewShow');
+    console.log(listData);
+    getActivity(listData, 'checklistViewShow');
 }
 
 function addCheckList(val)
@@ -132,22 +133,15 @@ function addCheckList(val)
     (val == 0)?$('#addCheckList').hide():$('#addCheckList').show();
 }
 
-function getList(listId, type){
-    csrf_token = $("input[name='_token']").val();
-    return $.ajax({
-        data: {
-            _token: csrf_token,
-            listId : listId,
-        },
-        type: 'POST',
-        url: '/api/project/list/',
-        success: function(response) {
-            if(type == 'detailListModal'){
-                $('#listTitleUpdateId').val(response.name);
-                $('#listUpdateId').val(response.id);
-            }
-        },
-    });
+function modalDeleteProject(val){
+    (val == 0)?$('#modalDeleteProject').hide():$('#modalDeleteProject').show();
+}
+
+function getList(response, type){
+    if(type == 'detailListModal'){
+        $('#listTitleUpdateId').val(response.name);
+        $('#listUpdateId').val(response.id);
+    }
 }
 
 function getProject(){
@@ -199,33 +193,40 @@ function updateProject(){
     });
 }
 
-function getActivity(activityId, type){
-    csrf_token = $("input[name='_token']").val();
-    return $.ajax({
-        data: {
-        _token: csrf_token,
-        activityId : activityId,
-        },
-        type: 'POST',
-        url: '/api/project/activity/',
-        success: function(response) {
-            if(type == 'checklistViewShow'){
-                $('#activityCardId').text(response.name);
-                $('#addActivityTitle').val(response.name);
-                $('#addActivityDescription').val(response.description);
-                $('#addActivityDueDate').val(response.due_date);
-                $('#activityCardDataId').val(response.id);
-            }
-        },
-    });
+function getActivity(data, type){
+    if(type == 'checklistViewShow'){
+        $('#activityCardId').text(data.name);
+        $('#addActivityTitle').val(data.name);
+        $('#addActivityDescription').val(data.description);
+        $('#addActivityDueDate').val(data.due_date);
+        $('#activityCardDataId').val(data.id);
+        $('#transactionButton').html("<div class='popup-panel-content' onclick='viewTransaction(1, "+JSON.stringify(data.transaction)+")'><button class='btn btn-default'><span class='fa fa-eye'></span>View Transaction</button></div>")
+    }
 }
 
-function viewTransaction(val)
+function viewTransaction(val, data)
 {
     if (val == 1){
         $('#transactionContentId').show()
         $('#checklistContentId').hide()
-    }
+        $('.rows').remove()
+        if(data != null){
+            $('#transactionName').val(data.name);
+            i = 1;
+            data.transaction_list.forEach(function(trans){
+                $('#transactionListRows').before(
+                    "<tr class='rows'><td>"+i+"</td><td>"+trans.name+"</td><td>"+trans.quantity+"</td><td>"+trans.price+"</td><td><button style='margin-right:2px;' class='btn btn-primary'><span class='fa fa-pencil'></span></button><button class='btn btn-danger'><span class='fa fa-trash'></span></button></td></tr>"
+                );
+                i+=1;
+            });
+        }
+        else{
+            $('#transactionName').val("");
+            $('#transactionName').attr('disabled', false);
+            // $('#transactionListData').html("");
+        }
+
+    }   
     else{
         $('#transactionContentId').hide()
         $('#checklistContentId').show()
@@ -280,6 +281,21 @@ function updateDescriptions(activityId, value, type){
     });
   }
 
+  function deleteProject(projectId){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token,
+      },
+      type: 'DELETE',
+      url: '/api/project/'+projectId+'/delete/',
+      success: function(response) {
+          getProject();
+          window.location.replace('/projects');
+      },
+    });
+  }
+
   function deleteActivity(activityId){
     csrf_token = $("input[name='_token']").val();
     return $.ajax({
@@ -295,13 +311,27 @@ function updateDescriptions(activityId, value, type){
     });
   }
 
+  function getTransaction(activityId){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token, activityId: activityId,
+      },
+      type: 'GET',
+      url: '/api/project/transaction/',
+      success: function(response) {
+        console.log(response);
+      },
+    });
+  }
+
 
 function listItems(list){
     htmlData = '<div class="add-new-list" onclick="listAddShow(1)">&nbsp;<span class="fa fa-plus"></span>&nbsp;Add a new list</div>';
     list.forEach(function(data){
-        htmlData = htmlData + '<div class="card-list"><div onclick="detailListModal(1, '+data.id+')" class="card-title" style="cursor:pointer;">'+data.name+'<div class="card-setting-button" title="List Setting"><div style="cursor:pointer;"><span class="fa fa-circle"></span><span class="fa fa-circle"></span><span class="fa fa-circle"></span></div></div></div>';
+        htmlData = htmlData + "<div class='card-list'><div onclick='detailListModal(1, "+data.id+", "+JSON.stringify(data)+")' class='card-title' style='cursor:pointer;'>"+data.name+"<div class='card-setting-button' title='List Setting'><div style='cursor:pointer;'><span class='fa fa-circle'></span><span class='fa fa-circle'></span><span class='fa fa-circle'></span></div></div></div>";
         data.activity_card.forEach(function(activity){
-             htmlData = htmlData + "<div class='activity-card-list' onclick='checklistViewShow(1, "+activity.id+")'><div class='activity-card-title' title='Activity Card List'>"+activity.name+"</div><div class='activity-card-edit'><span class='fa fa-pencil' style='float: right'></span></div></div>";
+             htmlData = htmlData + "<div class='activity-card-list' onclick='checklistViewShow(1, "+activity.id+", "+JSON.stringify(activity)+")'><div class='activity-card-title' title='Activity Card List'>"+activity.name+"</div><div class='activity-card-edit'><span class='fa fa-pencil' style='float: right'></span></div></div>";
         })
 
         htmlData = htmlData + '<div class="new-card" onclick="cardAddShow(1, '+data.id+')"><span class="fa fa-plus"></span>&nbsp;Add New Card</div></div>';
