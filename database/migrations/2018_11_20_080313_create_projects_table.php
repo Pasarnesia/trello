@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('cost');
             $table->tinyInteger('cost_status');
             $table->string('address');
+            $table->string('description');
             $table->bigInteger('created_by');
             $table->timestamps();
         });

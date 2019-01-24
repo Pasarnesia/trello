@@ -67,6 +67,7 @@ class HomeController extends Controller
             'name' => @$request->name,
             'cost' => @$request->cost,
             'address' => @$request->address,
+            'description' => @$request->description,
             'created_by' => @$current_user->id,
             'cost_status' => 1,
         ]);

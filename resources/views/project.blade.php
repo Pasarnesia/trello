@@ -363,7 +363,7 @@
 
     <div class="popup-modal" id="modalAddMember">
         <div class="popup-content" >
-        <form method="POST" action="/projects/{{ $projectItem->id }}/user-project/">
+        <form method="POST" action="/projects/{{ @$projectItem->id }}/user-project/">
         {{ csrf_field() }}
             <div class="close-button" onclick="addMemberModal(0)">
                 <span class="fa fa-close"></span>
@@ -409,7 +409,7 @@
                     <span class="fa fa-close"></span>
                     &nbsp; Cancel
                 </a>
-                <button class="btn btn-danger" onclick="deleteProject({{ $projectItem->id }})">
+                <button class="btn btn-danger" onclick="deleteProject({{ @$projectItem->id }})">
                     <span class="fa fa-trash"></span>
                     Delete
                 </button>
