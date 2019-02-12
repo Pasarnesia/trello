@@ -33,7 +33,7 @@
 <input type="hidden" id="currentProjectId" value="{{ @$currentProject->id }}"/>
     <div class="project-details">
         @if(!empty(@$currentProject->listCard))
-            <b onclick="projectUpdateShow(1, '{{ @$currentProject->name }}', '{{ @$currentProject->cost }}', '{{ @$currentProject->address }}')" style="cursor: pointer;" >
+            <b onclick="projectUpdateShow(1, '{{ @$currentProject->name }}', '{{ @$currentProject->description }}', '{{ @$currentProject->cost }}', '{{ @$currentProject->address }}')" style="cursor: pointer;" >
                 <span id="currentProjectTitle"></span>
                 &nbsp;
                 <span class="fa fa-pencil"></span>
@@ -147,11 +147,14 @@
             <div class="close-button" onclick="projectUpdateShow(0)">
                 <span class="fa fa-close"></span>
             </div>
-            <h4>Update Project</h4>
+            <h4>Detail Project</h4>
             <hr style="border: 2px solid #000066;">
             <div class="popup-form">
                 <label>Project Name</label>
                 <input type="text" name="name" class="form-control" id="projectNameIdUpdate" /><br>
+                <label>Project Description</label>
+                <textarea type="text" name="desc" class="form-control" id="projectDescIdUpdate" ></textarea>
+                <br>
                 <label>Project Cost</label>
                 <input type="number" name="cost" class="form-control" id="projectCostIdUpdate"/><br>
                 <label>Address</label>
@@ -159,7 +162,7 @@
                 <div class="popup-footer">
                     <button class="btn btn-primary" style="background: #000066" onclick="updateProject()">
                         <span class="fa fa-save"></span>
-                        &nbsp; Save
+                        &nbsp; Update
                     </button>
                     <div class="btn btn-default" onclick="projectUpdateShow(0)">
                         <span class="fa fa-close"></span>
@@ -270,6 +273,41 @@
                             <span class="fa fa-plus"></span>
                             Add Checklist
                         </button>
+                    </div>
+                </div>
+                <div class="popup-panel-title">
+                    <span class="fa fa-paperclip"></span>
+                    <label>Attachment</label><br/>
+                    <div class="popup-panel-content">
+                        <div style="display: flex;">
+                            <!-- <img id="jajal_id" src="#"> -->
+                            <div id="jajal_id"></div>
+                            <div class="upload-image" id="upload_image1">
+                                <div id="content_upload_1">
+                                    <span class="fa fa-camera upload-button"></span>
+                                    <br>
+                                    Upload
+                                </div>
+                            </div>	
+                            <div class="upload-image" id="upload_image2">
+                                <div id="content_upload_2">
+                                    <span class="fa fa-camera upload-button"></span>
+                                    <br>
+                                    Upload
+                                </div>
+                            </div>	
+                            <div class="upload-image" id="upload_image3">
+                                <div id="content_upload_3">
+                                    <span class="fa fa-camera upload-button"></span>
+                                    <br>
+                                    Upload
+                                </div>
+                            </div>	
+                        </div>
+            
+                        <input type='file' id="image1" name="image1" style="display: none;" />
+                        <input type='file' id="image2" name="image2" style="display: none;" />
+                        <input type='file' id="image3" name="image3" style="display: none;" />
                     </div>
                 </div>
                 <button class="btn btn-danger" id="deleteActivityCardId">

@@ -49,4 +49,8 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
         Route::get('get', ['as'=> 'get', 'uses'=> 'ProjectController@getTransaction']);
     });
 
+    Route::group(['prefix'=> 'media', 'as'=> 'media.',], function(){
+        Route::post('upload', ['as'=> 'upload', 'uses'=> 'ProjectController@uploadMedia']);
+    });
+
 });

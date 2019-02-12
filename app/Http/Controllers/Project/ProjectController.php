@@ -70,6 +70,7 @@ class ProjectController extends Controller
         if($project != null){
             $project->update([
                 'name' => $request->name,
+                'description' => $request->desc,
                 'cost' => $request->cost,
                 'address' => $request->address,
             ]);
@@ -177,5 +178,19 @@ class ProjectController extends Controller
     public function deleteChat($id)
     {
         return $request->all();
+    }
+
+    public function uploadMedia(Request $request)
+    {
+        dd($request->all());
+        // $validator = Validator::make($request->all(), [
+        //     'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg'
+        // ]);
+        // if($validator->fails()){
+        //     return response()->json(['message' => $validator->messages()], 400);
+        // }
+        // $request->file('file')->storeAs('files', 'files_'.@$this->currentUser->id);
+        
+        // return back()->with('success', 'Your verification request has been successfully submitted.');
     }
 }

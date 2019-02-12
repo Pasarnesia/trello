@@ -82,6 +82,28 @@ $(document).ready(function(){
 // list name
     $('#addMemberList').select2({ width: 'resolve' });
 
+
+
+    $("#image1").change(function() {
+        readURL(this, 'upload_image1', 'content_upload_1');
+    });
+    $("#image2").change(function() {
+        readURL(this, 'upload_image2', 'content_upload_2');
+    });
+    $("#image3").change(function() {
+        readURL(this, 'upload_image3', 'content_upload_3');
+    });
+    
+    $("#upload_image1").click(function() {
+        $('#image1').click()
+    });
+    $("#upload_image2").click(function() {
+        $('#image2').click()
+    });
+    $("#upload_image3").click(function() {
+        $('#image3').click()
+    });
+
 })
 
 function projectAddShow(val)
@@ -94,10 +116,11 @@ function addMemberModal(val)
     (val == 0)?$('#modalAddMember').hide():$('#modalAddMember').show();
 }
 
-function projectUpdateShow(val, name, cost, address)
+function projectUpdateShow(val, name, desc, cost, address)
 {
     (val == 0)?$('#updateProject').hide():$('#updateProject').show();
     $('#projectNameIdUpdate').val(name);
+    $('#projectDescIdUpdate').val(desc);
     $('#projectCostIdUpdate').val(cost);
     $('#projectAddressIdUpdate').val(address);
 }
@@ -172,12 +195,14 @@ function updateProject(){
     csrf_token = $("input[name='_token']").val();
     projectId = $('#currentProjectId').val();
     name = $('#projectNameIdUpdate').val();
+    desc = $('#projectDescIdUpdate').val();
     cost = $('#projectCostIdUpdate').val();
     address = $('#projectAddressIdUpdate').val();
     return $.ajax({
         data: {
             _token: csrf_token,
             name: name,
+            desc: desc,
             cost: cost,
             address: address,
         },
@@ -200,7 +225,7 @@ function getActivity(data, type){
         $('#addActivityDescription').val(data.description);
         $('#addActivityDueDate').val(data.due_date);
         $('#activityCardDataId').val(data.id);
-        $('#transactionButton').html("<div class='popup-panel-content' onclick='viewTransaction(1, "+JSON.stringify(data.transaction)+")'><button class='btn btn-default'><span class='fa fa-eye'></span>View Transaction</button></div>")
+        $('#transactionButton').html("<div class='popup-panel-content'><button onclick='viewTransaction(1, "+JSON.stringify(data.transaction)+")' class='btn btn-default'><span class='fa fa-eye'></span>View Transaction</button></div>")
     }
 }
 
@@ -338,4 +363,30 @@ function listItems(list){
     });
 
     $('#cardListId').html(htmlData);
+}
+
+function uploadFile(file){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token,
+        file : file,
+      },
+      type: 'POST',
+      url: '/api/project/media/upload/',
+      success: function(response) {
+          console.log(response);
+      },
+    });
+}
+
+function readURL(input, id, content) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          $('#'+id).css('background-image', 'url('+e.target.result+')')
+          $('#'+content).hide()
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
 }
