@@ -81,6 +81,7 @@ $(document).ready(function(){
 
 // list name
     $('#addMemberList').select2({ width: 'resolve' });
+    $('#addMemberListRole').select2({ width: 'resolve' });
 
 
 
@@ -114,6 +115,11 @@ function projectAddShow(val)
 function addMemberModal(val)
 {
     (val == 0)?$('#modalAddMember').hide():$('#modalAddMember').show();
+}
+
+function listMemberModal(val)
+{
+    (val == 0)?$('#modalListMember').hide():$('#modalListMember').show();
 }
 
 function projectUpdateShow(val, name, desc, cost, address)
@@ -181,12 +187,8 @@ function getProject(){
             $('#currentProjectTitle').text(window.store.name);
             $('#currentProjectCreator').text(window.store.created_by.name);
             $('#currentProjectCity').text(window.store.address);
-            var User = "";
-            window.store.user_project.forEach(function(element) {
-                User = User + '<span class="btn btn-warning userProjectBundle" title="'+element.user.name+'">'+element.user.name.substr(0,1)+"</span>";
-            });
-            $('#currentProjectUser').html(User);
             listItems(window.store.list_card);
+            listMemberProject(window.store.user_project);
         },
     });
 }
@@ -389,4 +391,13 @@ function readURL(input, id, content) {
         }
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function listMemberProject(data)
+{
+    var dataRet = "";
+    window.store.user_project.forEach(function(element) {
+        dataRet = dataRet + "<tr align='left'><td>"+element.user.name+"</td><td>"+element.user_level.title+"</td><tr></tr>";
+    });
+    $('#memberListRows').before(dataRet);
 }

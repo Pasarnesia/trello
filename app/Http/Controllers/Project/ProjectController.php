@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Http\Libraries\ProjectLibrary;
 use App\Project;
 use App\ActivityCard;
 use App\ListCard;
@@ -15,11 +16,13 @@ use Auth;
 class ProjectController extends Controller
 {
     protected $currentUser;
+    protected $projectLib;
 
     function __contruct()
     {
         parent::__construct();
         $this->currentUser = Auth::user();
+        $this->projectLib = new ProjectLibrary();
     }
 
     public function index()
@@ -35,13 +38,13 @@ class ProjectController extends Controller
 
     public function getProjectListById($projectId){
         $projectItem = Project::where('id', $projectId)
+            ->with('userProject.userLevel')
             ->with('userProject.user')
             ->with('createdBy')
             ->with(['listCard.activityCard' => function($q){
                 $q->with('transaction.transactionList')->with('priority.color')->with('media')->with('checklist.media');
             }])
             ->first();
-
         return response()->json([
             'status' => 'success',
             'data' => $projectItem,

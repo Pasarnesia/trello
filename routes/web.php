@@ -20,6 +20,7 @@ Auth::routes();
 Route::group(['prefix' => '/', 'as' => 'root',], function(){
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('team', 'HomeController@team')->name('team');
+    Route::get('invitation', 'HomeController@invitation')->name('invite');
 
     Route::group(['prefix' => 'projects', 'as' => 'projects',], function(){
         Route::get('/', 'HomeController@projectMenu')->name('projectMenu');
@@ -44,7 +45,10 @@ Route::group(['prefix' => '/', 'as' => 'root',], function(){
 
     Route::group(['prefix' => 'chats', 'as' => 'chats',], function(){
         Route::get('/', 'HomeController@chatMenu')->name('chatMenu');
-        Route::get('{project_id}', 'HomeController@chatProject')->name('chatProject');
+        Route::group(['prefix' => '{project_id}',], function(){
+            Route::get('/', 'HomeController@chatProject')->name('chatProject');
+            Route::post('send', 'HomeController@createChat');
+        });
     });
 
 

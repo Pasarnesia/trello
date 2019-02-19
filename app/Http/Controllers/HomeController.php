@@ -10,6 +10,8 @@ use App\ListCard;
 use App\ActivityCard;
 use App\Checklist;
 use App\User;
+use App\UserLevel;
+use App\Chat;
 use App\Http\Libraries\ProjectLibrary;
 
 class HomeController extends Controller
@@ -46,6 +48,10 @@ class HomeController extends Controller
     public function projectView($projectId){
         $current_user = Auth::user();
         $data = $this->projectLib->getProjectById($projectId, $current_user);
+        if($data['status'] == 0){
+            // return "You have not any permission to open this project";
+            return view('project_null');
+        }
         return view('project', $data);
     }
 
@@ -63,6 +69,10 @@ class HomeController extends Controller
     public function createProject(Request $request)
     {
         $current_user = Auth::user();
+        $userLevel = UserLevel::where('title', 'admin')->first();
+        if(!$userLevel){
+            return "Error, you should seed your user level first";
+        }
         $savedProjects = Project::create([
             'name' => @$request->name,
             'cost' => @$request->cost,
@@ -74,7 +84,7 @@ class HomeController extends Controller
         $userProject = UserProject::create([
             'project_id' => @$savedProjects->id,
             'user_id' => @$current_user->id,
-            'user_level_id' => 1,
+            'user_level_id' => $userLevel->id,
         ]);
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
@@ -87,13 +97,19 @@ class HomeController extends Controller
     public function addUserProject($projectId, Request $request)
     {
         $current_user = Auth::user();
-        $userId = $request->user_id;
+        $userId = @$request->user_id;
+        $roleId = @$request->role_id;
         $userExist = User::find($userId);
+        if(!$roleId){
+            return "Error, you should seed your user level first";
+        }
+        $role = UserLevel::find(@$roleId);
+        $roleSuspend = UserLevel::where('title', $role->title." suspended")->first();
         if(!empty($userExist)){
             UserProject::create([
                 'project_id' => $projectId,
                 'user_id' => $userId,
-                'user_level_id' => 1,
+                'user_level_id' => $roleSuspend->id,
             ]);
         }
         $data = $this->projectLib->getProjectById($projectId, $current_user->id);
@@ -154,12 +170,24 @@ class HomeController extends Controller
     public function chatProject($projectId){
         $current_user = Auth::user();
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
-        $currentProject = Project::where('id', $projectId)->first();
+        $currentProject = Project::where('id', $projectId)->with('chat')->first();
         $data = [
             'projectList' => $projectList,
             'currentProject' => $currentProject,
+            'user_id' => $current_user->id,
         ];
         return view('chatproject', $data);
+    }
+
+    public function createChat($projectId, Request $request){
+        $current_user = Auth::user();
+        $chat = Chat::create([
+            'user_id' => $current_user->id,
+            'project_id' => $projectId,
+            'message' => @$request->message,
+        ]);
+        // return $this->chatProject($projectId);
+        return redirect('chats/'.$projectId.'/');
     }
 
     public function settingMenu(){
@@ -189,6 +217,25 @@ class HomeController extends Controller
         ];
 
         return view('team', $data);
+    }
+
+    public function invitation()
+    {
+        $current_user = Auth::user();
+        $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $projectArray = [];
+        foreach ($projectList as $key => $value) {
+            $projectArray[] = $value->id;
+        }
+
+        $userProject = UserProject::whereIn('project_id', $projectArray)->whereNotIn('user_id', [$current_user->id])->with('user')->get()->unique('user_id');
+
+        $data = [
+            'projectList' => $projectList,
+            'userProject' => $userProject,
+        ];
+
+        return view('invitation', $data);
     }
 
     public function resetPassword()

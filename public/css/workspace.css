@@ -304,7 +304,7 @@ h4{
 .chat-feed-receiver{
     min-height: 30px;
     background: #d2ffea;
-    max-width: 500px;
+    width: 500px;
     padding: 10px;
     border-radius: 5px;
     white-space: normal;
@@ -350,13 +350,20 @@ h4{
     /*background: #dadade;*/
     background: #fff;
     border: 2px solid #f7f7f7;
-    padding: 10px;
     z-index: 2;
     display: none;
     box-shadow: 5px 5px 15px 5px #000;
 }
 .header-notification{
     position: relative;
+    padding: 10px;
+}
+.notification-items{
+    padding: 10px;
+    border-bottom: 1px solid #f7f7f7;
+}
+.notification-items:hover{
+    background: #f7f7f7;
 }
 .close-button{
     position: absolute;

@@ -23,4 +23,9 @@ class Project extends Model
     {
         return $this->hasMany('App\UserProject');
     }
+
+    public function chat()
+    {
+        return $this->hasMany('App\Chat');
+    }
 }

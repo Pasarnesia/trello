@@ -47,6 +47,9 @@
             <button class="btn btn-primary" style="padding: 2px 10px;" title="Add Member" onclick="addMemberModal(1)">
                 <span class="fa fa-user-plus"></span>
             </button>
+            <button class="btn btn-primary" style="padding: 2px 10px;" title="Add Member" onclick="listMemberModal(1)">
+                <span class="fa fa-list"></span>
+            </button>
             <button class="btn btn-danger" style="padding: 2px 10px;" title="Delete Project" onclick="modalDeleteProject(1)">
                 <span class="fa fa-trash"></span>
             </button>
@@ -410,7 +413,6 @@
             <hr style="border: 2px solid #000066;">
             <label>Find Member</label>
             <div>
-                <!-- <input type="text" class="form-control"> -->
                 <select id="addMemberList" name="user_id">
                     <option value="0">---</option>
                     @if(isset($userList))
@@ -421,15 +423,51 @@
                 </select>
             </div>
             <br>
+            <label>Assign Role</label>
+            <div>
+                <select id="addMemberListRole" name="role_id">
+                    <option value="0">---</option>
+                    @if(isset($roleList))
+                    @foreach ($roleList as $items)
+                    <option value="{{ $items->id }}">{{ $items->title }}</option>
+                    @endforeach
+                    @endif
+                </select>
+            </div>
+            <br>
             <div class="popup-footer">
                 <button class="btn btn-primary" type="submit">
-                    <span class="fa fa-save"></span>
-                    &nbsp; Save
+                    <span class="fa fa-envelope"></span>
+                    &nbsp; Invite
                 </button>
+                <div class="btn btn-danger" onclick="addMemberModal(0)">
+                    <span class="fa fa-close"></span>
+                    &nbsp; Close
+                </div>
             </div>
         </form>
         </div>
     </div>
+
+    <div class="popup-modal" id="modalListMember">
+        <div class="popup-content" >
+            <div class="close-button" onclick="listMemberModal(0)">
+                <span class="fa fa-close"></span>
+            </div>
+            <h4>List Member of Project</h4>
+            <hr style="border: 2px solid #000066;">
+            <div>
+                <table class="table table-hover">
+                    <tr>
+                        <th>Member Name</th>
+                        <th>Roles</th>
+                    </tr>
+                    <tr id="memberListRows"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
 
     <div class="popup-modal" id="modalDeleteProject">
         <div class="popup-content" >

@@ -104,8 +104,13 @@
                     <div class="header-notification">
                         <h4 align="center">Notification</h4>
                         <span class="fa fa-close close-button" onclick="notificationShow(0)"></span>
-                        <hr>
+                        <hr style="margin-bottom:0px;">
                     </div>
+                    <a href="/invitation/" style="text-decoration: none; color:unset;">
+                        <div class="notification-items">
+                            You have been invited by Zainul in a project.
+                        </div>
+                    </a>
                 </div>
     </body>
 </html>

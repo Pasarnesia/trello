@@ -20,40 +20,47 @@
             <span class="fa fa-circle"></span>&nbsp;&nbsp; Your Projects
         </div>
     </a>
-    <a href="#" style="text-decoration: none">
-        <div class="project-items" style="background:#00003b;">
+    <a href="/team/" style="text-decoration: none">
+        <div class="project-items" >
             <span class="fa fa-circle"></span>&nbsp;&nbsp; Your Teams
         </div>
     </a>
-    <a href="/invitation/" style="text-decoration: none">
-      <div class="project-items">
+    <a href="#" style="text-decoration: none">
+      <div class="project-items" style="background:#00003b;">
           <span class="fa fa-circle"></span>&nbsp;&nbsp; Project Invitations
       </div>
     </a>
 @endsection
 
+@section('project-details')
+  <div class="project-details">
+    <h4>
+      <span class="fa fa-envelope"></span>
+      Project Invitation
+    </h4>
+  </div>
+@endsection
+
 @section('container-full')
     <div class="container-fluid">
-      @foreach($userProject as $userItem)
-      <div class="col-md-3" style="margin-bottom:35px;">
-        <div class="btn btn-info btn-block" style="
-          height: 90px;
-          font-size: 16px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          text-align: left;
-          background-image: linear-gradient(to right, #000066, #03183b);
-        ">
-          <span style="font-weight: bold; text-transform: uppercase;">
-            {{ $userItem->user->name }}
-          </span>
-          <br>
-          <span style="font-style: italic;">
-            {{ $userItem->user->email }}
-          </span>
-        </div>
-      </div>
-      @endforeach
+      <table class="table table-hover table-bordered" style="background:#f7f7f7; width:80%;">
+        <tr>
+          <th>Project Name</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+        <tr>
+            <td>Project Name</td>
+            <td>Admin</td>
+            <td>
+              <button class="btn btn-default">
+                Accept
+              </button>
+              <button class="btn btn-danger">
+                Reject
+              </button>
+            </td>
+          </tr>
+      </table>
     </div>
 @endsection

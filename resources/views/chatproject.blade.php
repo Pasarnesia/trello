@@ -4,32 +4,33 @@
 <input type="hidden" id="currentProjectId" value="{{ $currentProject->id }}">
     <div class="container-fluid container-chat">
         <div class="chat-body">
-        	<div class="container-fluid">
-        		<div class="chat-feed-sender">
-        			<span class="chat-sender">Sender</span>
-        			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        			<span class="chat-time">Sender</span>
-        		</div>
-        	</div>
-        	<div class="container-fluid">
-        		<div class="chat-feed-receiver">
-        			<span class="chat-sender">Sender</span>
-        			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        			<span class="chat-time">Sender</span>
-        		</div>
-        	</div>
-        	<div class="container-fluid">
-        		<div class="chat-feed-sender">
-        			<span class="chat-sender">Sender</span>
-        			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        			<span class="chat-time">Sender</span>
-        		</div>
-        	</div>
+			@foreach(@$currentProject->chat as $chatItems)
+				<div class="container-fluid">
+					@if($chatItems->user->id == $user_id)
+						<div class="chat-feed-receiver">
+							<span class="chat-sender" >
+					@else
+						<div class="chat-feed-sender">
+							<span class="chat-sender" >
+					@endif
+								{{ $chatItems->user->name }}
+							</span>
+								{{ $chatItems->message }}
+							<span class="chat-time">{{ $chatItems->created_at }}</span>
+					</div>
+				</div>
+			@endforeach
         </div>
 	    <div class="chat-box">
-	    	<input type="text" name="chat-input" class="chat-input">
-	    	<br>
-	    	<button class="btn btn-default">Send</button>
-	    </div>
+			<form action="/chats/{{ @$currentProject->id }}/send" method="post">
+				{{ csrf_field() }}
+				<input type="text" name="message" class="chat-input">
+				<br>
+				<div class="btn btn-default" onclick="window.location.reload()">
+					<span class="fa fa-refresh"></span>
+				</div>
+				<button type="submit" class="btn btn-default">Send</button>
+			</form>			
+		</div>
     </div>
 @endsection
