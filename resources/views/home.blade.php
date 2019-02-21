@@ -30,6 +30,11 @@
           <span class="fa fa-circle"></span>&nbsp;&nbsp; Project Invitations
       </div>
     </a>
+    <a href="/notification/" style="text-decoration: none">
+      <div class="project-items">
+          <span class="fa fa-circle"></span>&nbsp;&nbsp; Notifications
+      </div>
+    </a>
 @endsection
 
 @section('container-full')

@@ -12,6 +12,7 @@ use App\Checklist;
 use App\User;
 use App\UserLevel;
 use App\Chat;
+use App\Notification;
 use App\Http\Libraries\ProjectLibrary;
 
 class HomeController extends Controller
@@ -41,6 +42,7 @@ class HomeController extends Controller
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
             'projectList' => $projectList,
+            'user' => $current_user,
         ];
         return view('home', $data);
     }
@@ -106,14 +108,17 @@ class HomeController extends Controller
         $role = UserLevel::find(@$roleId);
         $roleSuspend = UserLevel::where('title', $role->title." suspended")->first();
         if(!empty($userExist)){
-            UserProject::create([
+            $userProject = UserProject::create([
                 'project_id' => $projectId,
                 'user_id' => $userId,
                 'user_level_id' => $roleSuspend->id,
+                'invited_by_user_id' => $current_user->id,
             ]);
+            if($userProject){
+                $this->createNotification(@$userId, $current_user->name.' invites you in a project.', "/invitation/");
+            }
         }
-        $data = $this->projectLib->getProjectById($projectId, $current_user->id);
-        return view('project', $data);
+        return redirect('/projects/'.$projectId);
     }
 
     public function createList(Request $request){
@@ -163,6 +168,7 @@ class HomeController extends Controller
         $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
         $data = [
             'projectList' => $projectList,
+            'user' => $current_user,
         ];
         return view('chat', $data);
     }
@@ -175,18 +181,30 @@ class HomeController extends Controller
             'projectList' => $projectList,
             'currentProject' => $currentProject,
             'user_id' => $current_user->id,
+            'user' => $current_user,
         ];
         return view('chatproject', $data);
     }
 
     public function createChat($projectId, Request $request){
         $current_user = Auth::user();
+        $project = Project::where('id', $projectId)
+            ->with(['userProject' => function($q){
+                $q->whereHas('userLevel', function($q){
+                    $q->where('status', 1);
+                });
+            }])->first();
         $chat = Chat::create([
             'user_id' => $current_user->id,
             'project_id' => $projectId,
             'message' => @$request->message,
+            'user' => $current_user,
         ]);
-        // return $this->chatProject($projectId);
+        foreach(@$project->userProject as $k => $v){
+            if(@$v->user_id != $current_user->id){
+                $this->createNotification(@$v->user_id, $current_user->name.' send a message in project '.$project->name, "/chats/".$projectId);
+            }
+        }
         return redirect('chats/'.$projectId.'/');
     }
 
@@ -196,6 +214,7 @@ class HomeController extends Controller
         $data = [
             'projectList' => $projectList,
             'current_user' => $current_user,
+            'user' => $current_user,
         ];
         return view('settings', $data);
     }
@@ -214,6 +233,7 @@ class HomeController extends Controller
         $data = [
             'projectList' => $projectList,
             'userProject' => $userProject,
+            'user' => $current_user,
         ];
 
         return view('team', $data);
@@ -229,13 +249,62 @@ class HomeController extends Controller
         }
 
         $userProject = UserProject::whereIn('project_id', $projectArray)->whereNotIn('user_id', [$current_user->id])->with('user')->get()->unique('user_id');
+        $invitationList = UserProject::where('user_id', $current_user->id)
+            ->whereHas('userLevel', function($q){
+                $q->where('title', 'like', '%suspended');
+            })
+            ->with('project')
+            ->get();
+        $data = [
+            'projectList' => $projectList,
+            'userProject' => $userProject,
+            'user' => $current_user,
+            'invitation' => $invitationList,
+        ];
+
+        return view('invitation', $data);
+    }
+
+    public function notification()
+    {
+        $current_user = Auth::user();
+        $projectList = $this->projectLib->getProjectListByUserId($current_user->id);
+        $projectArray = [];
+        foreach ($projectList as $key => $value) {
+            $projectArray[] = $value->id;
+        }
+
+        $userProject = UserProject::whereIn('project_id', $projectArray)->whereNotIn('user_id', [$current_user->id])->with('user')->get()->unique('user_id');
 
         $data = [
             'projectList' => $projectList,
             'userProject' => $userProject,
+            'user' => $current_user,
         ];
+        return view('notification', $data);
+    }
 
-        return view('invitation', $data);
+    public function createNotification($user_id, $content, $route)
+    {
+        $notif = Notification::create([
+            'status' => 1,
+            'user_id' => @$user_id,
+            'content' => @$content,
+            'route' => @$route,
+        ]);
+        return $notif;
+    }
+
+    public function deleteNotification(Request $request)
+    {
+        $notif = Notification::find(@$request->notif_id);
+        if($notif){
+            $notif->update([
+                'status' => 0,
+            ]);
+        }
+        // return $this->notification();
+        return redirect('/notification');
     }
 
     public function resetPassword()
@@ -243,6 +312,7 @@ class HomeController extends Controller
         $current_user = Auth::user();
         $data = [
             'current_user' => $current_user,
+            'user' => $current_user,
         ];
         return view('reset', $data);
     }
@@ -252,6 +322,7 @@ class HomeController extends Controller
         $current_user = Auth::user();
         $data = [
             'current_user' => $current_user,
+            'user' => $current_user,
         ];
         return view('helps', $data);
     }
@@ -261,6 +332,7 @@ class HomeController extends Controller
         $current_user = Auth::user();
         $data = [
             'current_user' => $current_user,
+            'user' => $current_user,
         ];
         return view('workspace', $data);
     }
@@ -270,6 +342,7 @@ class HomeController extends Controller
         $current_user = Auth::user();
         $data = [
             'current_user' => $current_user,
+            'user' => $current_user,
         ];
         return view('feedback', $data);
     }

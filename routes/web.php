@@ -21,6 +21,11 @@ Route::group(['prefix' => '/', 'as' => 'root',], function(){
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('team', 'HomeController@team')->name('team');
     Route::get('invitation', 'HomeController@invitation')->name('invite');
+    Route::group(['prefix' => 'notification'], function(){
+        Route::get('/', 'HomeController@notification')->name('notification');
+        Route::post('create', 'HomeController@createNotification');
+        Route::post('delete', 'HomeController@deleteNotification');
+    });
 
     Route::group(['prefix' => 'projects', 'as' => 'projects',], function(){
         Route::get('/', 'HomeController@projectMenu')->name('projectMenu');

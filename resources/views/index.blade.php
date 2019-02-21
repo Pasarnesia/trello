@@ -95,22 +95,37 @@
 
 
 
-                <div class="notification-button">
-                    <div class="circle-button" onclick="notificationShow(1)">
-                        <span class="fa fa-bell"></span>
-                    </div>
-                </div>
-                <div class="notification-bar" id="notifBarId">
+                <div class="notification-bar" id="notifBarId" >
                     <div class="header-notification">
                         <h4 align="center">Notification</h4>
                         <span class="fa fa-close close-button" onclick="notificationShow(0)"></span>
                         <hr style="margin-bottom:0px;">
                     </div>
-                    <a href="/invitation/" style="text-decoration: none; color:unset;">
+                    @php $status=0; @endphp
+                    @foreach(@$user->notifications as $notif)
+                    @if($notif->status == 1)
+                    @php $status+=1; @endphp
+                    <a href="{{ @$notif->route }}" style="text-decoration: none; color:unset;">
                         <div class="notification-items">
-                            You have been invited by Zainul in a project.
+                            {{ @$notif->content }}
                         </div>
                     </a>
+                    @endif
+                    @endforeach
+                    <a href="/notification/" style="text-decoration: none; color:unset; position: absolute; bottom: 50px; width:100%;">
+                        <div class="notification-items" style="font-weight: bold; text-align: center; font-size: 16px;">
+                            View all notification
+                        </div>
+                    </a>
+                </div>
+                <div class="notification-button">
+                    <div class="circle-button" onclick="notificationShow(1)">
+                        @if($status > 0)
+                            <span class="fa fa-bell" style="color:yellow"></span>
+                        @else
+                            <span class="fa fa-bell"></span>
+                        @endif
+                    </div>
                 </div>
     </body>
 </html>
