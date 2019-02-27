@@ -348,7 +348,7 @@
                             <td><input type="text" class="form-control" id="trans_name" placeholder="Name"></td>
                             <td><input type="text" class="form-control" id="trans_qty" placeholder="Quantity"></td>
                             <td><input type="text" class="form-control" id="trans_price" placeholder="Price"></td>
-                            <td><button class='btn btn-primary' style="margin-right:2px;"><span class='fa fa-save'></span></button></td>
+                            <td><button class='btn btn-primary' style="margin-right:2px;" onclick="onClickAddTransaction()"><span class='fa fa-save'></span></button></td>
                         </tr>
                     </table>
                 </div>

@@ -46,7 +46,8 @@ Route::group(['prefix'=> 'project', 'as'=> 'project.', 'namespace'=> 'Project',]
     });
 
     Route::group(['prefix'=> 'transaction', 'as'=> 'transaction.',], function(){
-        Route::get('get', ['as'=> 'get', 'uses'=> 'ProjectController@getTransaction']);
+        Route::get('get', ['uses'=> 'ProjectController@getTransaction']);
+        Route::post('create', ['uses'=> 'ProjectController@createTransaction']);
     });
 
     Route::group(['prefix'=> 'media', 'as'=> 'media.',], function(){

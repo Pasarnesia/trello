@@ -196,4 +196,40 @@ class ProjectController extends Controller
         
         // return back()->with('success', 'Your verification request has been successfully submitted.');
     }
+
+    public function createTransaction(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'qty' => 'required',
+            'price' => 'required',
+            'activity_id' => 'required',
+        ]);
+        if($validator->fails()){
+            return response()->json(['message' => $validator->messages()], 400);
+        }
+        $activity = ActivityCard::find(@$request->activity_id);
+        if(!$activity){
+            return response()->json(['message' => "Data not found"], 404);
+        }
+        if(!$activity->transaction){
+            $trans = Transaction::create([
+                'name' => null,
+            ]);
+            $activity->update([
+                'transaction_id' => $trans->id,
+            ]);
+        }
+        $transList = TransactionList::create([
+            'transaction_id' => @$activity->transaction->id,
+            'name' => @$request->name,
+            'quantity' => @$request->qty,
+            'price' => @$request->price,
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => '',
+            'data' => $transList,
+        ]);
+    }
 }

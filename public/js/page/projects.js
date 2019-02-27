@@ -221,6 +221,7 @@ function updateProject(){
 }
 
 function getActivity(data, type){
+    window.store.activity = data;
     if(type == 'checklistViewShow'){
         $('#activityCardId').text(data.name);
         $('#addActivityTitle').val(data.name);
@@ -231,7 +232,7 @@ function getActivity(data, type){
     }
 }
 
-function viewTransaction(val, data)
+function viewTransaction(val, data=null)
 {
     if (val == 1){
         $('#transactionContentId').show()
@@ -241,8 +242,9 @@ function viewTransaction(val, data)
             $('#transactionName').val(data.name);
             i = 1;
             data.transaction_list.forEach(function(trans){
+                window.store.transIndex = i;
                 $('#transactionListRows').before(
-                    "<tr class='rows'><td>"+i+"</td><td>"+trans.name+"</td><td>"+trans.quantity+"</td><td>"+trans.price+"</td><td><button style='margin-right:2px;' class='btn btn-primary'><span class='fa fa-pencil'></span></button><button class='btn btn-danger'><span class='fa fa-trash'></span></button></td></tr>"
+                    "<tr class='rows rowTrans-"+i+"'><td>"+i+"</td><td>"+trans.name+"</td><td>"+trans.quantity+"</td><td>"+trans.price+"</td><td><button style='margin-right:2px;' class='btn btn-primary'><span class='fa fa-pencil'></span></button><button class='btn btn-danger' onclick='deleteRowTransaction("+i+", "+trans.id+")'><span class='fa fa-trash'></span></button></td></tr>"
                 );
                 i+=1;
             });
@@ -401,3 +403,44 @@ function listMemberProject(data)
     });
     $('#memberListRows').before(dataRet);
 }
+
+function onClickAddTransaction()
+{
+    name = $('#trans_name').val();
+    qty = $('#trans_qty').val();
+    price = $('#trans_price').val();
+    createTransactionList(window.store.activity.id, name, qty, price);
+}
+
+function createTransactionList(activityId, name, qty, price){
+    csrf_token = $("input[name='_token']").val();
+    return $.ajax({
+      data: {
+        _token: csrf_token,
+        activity_id : activityId,
+        name : name,
+        qty : qty,
+        price : price,
+      },
+      type: 'POST',
+      url: '/api/project/transaction/create/',
+      success: function(response) {
+        //   console.log(response);
+        data = response.data;
+        i = window.store.transIndex + 1;
+        window.store.transIndex = i;
+        $('#transactionListRows').before(
+            "<tr class='rows rowTrans-"+i+"'><td>"+i+"</td><td>"+data.name+"</td><td>"+data.quantity+"</td><td>"+data.price+"</td><td><button style='margin-right:2px;' class='btn btn-primary'><span class='fa fa-pencil'></span></button><button class='btn btn-danger'><span class='fa fa-trash'></span></button></td></tr>"
+        );
+        $('#trans_name').val('');
+        $('#trans_qty').val('');
+        $('#trans_price').val('');
+      },
+    });
+  }
+
+  function deleteRowTransaction(r, id)
+  {
+      console.log(r, id)
+      $('.rowTrans-'+r).remove()
+  }
